@@ -54,6 +54,7 @@ button { cursor: pointer; }
 .skip-link {
   position: fixed; top: var(--s-4); left: var(--s-4);
   z-index: 200;
+  display: inline-flex; align-items: center; min-height: 48px;
   padding: var(--s-3) var(--s-5);
   background: var(--paper); color: var(--ink);
   font-family: var(--font-mono);
@@ -152,8 +153,23 @@ button { cursor: pointer; }
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--s-6) var(--s-5);
 }
+/* Column placement. These live in CSS, never inline: an inline
+   grid-column cannot be overridden by a media query, so a 12-column
+   position survives into the 6-column mobile grid, creates implicit
+   columns, and pushes the page sideways. */
+.c1-4 { grid-column: 1 / span 4; }
+.c1-5 { grid-column: 1 / span 5; }
+.c1-6 { grid-column: 1 / span 6; }
+.c1-7 { grid-column: 1 / span 7; }
+.c6-7 { grid-column: 6 / span 7; }
+.c7-6 { grid-column: 7 / span 6; }
+.c8-5 { grid-column: 8 / span 5; }
+.c9-4 { grid-column: 9 / span 4; }
+
 @media (max-width: 900px) {
   .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
+  .c1-4, .c1-5, .c1-6, .c1-7,
+  .c6-7, .c7-6, .c8-5, .c9-4 { grid-column: 1 / -1; }
 }
 
 .section-head {
@@ -223,6 +239,7 @@ button { cursor: pointer; }
   color: var(--paper);
   display: inline-flex; align-items: baseline; gap: 0.55em;
   white-space: nowrap;
+  min-height: 44px; align-content: center; flex-wrap: wrap;
 }
 .nav__brand span {
   font-family: var(--font-mono);
@@ -368,6 +385,13 @@ button { cursor: pointer; }
   transition: background-size var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease);
 }
 .link:hover, .link:focus-visible { background-size: 0% 1px; background-position: 100% 100%; }
+
+/* Touch pointers get a full 44px target without loosening the tight
+   editorial rhythm on a mouse-driven screen. */
+@media (pointer: coarse) {
+  .link { min-height: 44px; }
+  .social a, .social span { min-height: 46px; }
+}
 
 /* Intentional empty state for content that does not exist yet */
 .is-pending {

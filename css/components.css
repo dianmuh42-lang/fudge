@@ -5,8 +5,34 @@
 
 /* ---------- Hero -------------------------------------------- */
 
-.hero { --scene-len: 2.1; --scene-len-m: 1.9; }
+.hero { --scene-len: 2.6; --scene-len-m: 2.2; }
 .hero__stage { background: var(--ink); }
+
+/* ---- Hero film -------------------------------------------- */
+
+.hero__film {
+  inset: -3%; width: 106%; height: 106%;
+  background-color: var(--ink);
+  background-size: cover;
+  background-position: 50% 42%;
+}
+.hero__film video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  background: var(--ink);
+}
+
+/* Legibility scrim. Weighted to the left and the foot so the
+   headline holds against the film without flattening the subject,
+   who sits centre frame. */
+.hero__scrim {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    linear-gradient(100deg, rgba(0,0,0,.86) 0%, rgba(0,0,0,.55) 34%, rgba(0,0,0,.12) 62%, rgba(0,0,0,.42) 100%),
+    linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.10) 38%, transparent 62%),
+    radial-gradient(130% 95% at 50% 42%, transparent 30%, rgba(0,0,0,.62) 100%);
+}
 
 .hero__copy {
   position: relative; z-index: 5;
@@ -59,18 +85,44 @@
 
 /* ---------- Ecosystem (Frequency Digital Group) -------------- */
 
+/* The whole ecosystem composition has to survive inside one pinned
+   viewport. Column flex with a flexible diagram means the SVG gives up
+   height to the heading and CTA instead of pushing them out of frame. */
+.eco-layout {
+  display: flex; flex-direction: column;
+  width: 100%;
+  /* stretch to the pinned stage so the flex distribution below has a
+     definite height to divide — a content-sized box makes max-height:100%
+     indefinite and the SVG just pushes the CTA out of frame */
+  height: 100%;
+  padding-block: clamp(2.5rem, 6vh, 4.25rem);
+  gap: clamp(0.75rem, 2vh, 1.75rem);
+}
+.eco-head {
+  flex: 0 0 auto;
+  display: grid; gap: var(--s-4); justify-items: center;
+  text-align: center;
+}
+.eco-head .t-body { max-width: 64ch; margin-inline: auto; }
+.eco-cta { flex: 0 0 auto; text-align: center; }
+
 .eco-wrap {
   position: relative;
+  flex: 1 1 0; min-height: 0;
+  /* block, not grid: an auto grid row is content-sized, which makes
+     height:100% on the SVG indefinite and lets it size itself again */
+  display: block;
   width: 100%; max-width: 1100px; margin-inline: auto;
-  padding-block: var(--s-6);
 }
+/* fills the box it is given; preserveAspectRatio letterboxes it */
+.eco { display: block; width: 100%; height: 100%; }
 .eco { overflow: visible; }
 .eco text {
   font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.16em;
+  font-size: 14px; letter-spacing: 0.14em;
   text-transform: uppercase; fill: var(--paper);
 }
-.eco text.eco-sub { fill: var(--grey-2); font-size: 9.5px; }
+.eco text.eco-sub { fill: var(--grey-2); font-size: 11px; letter-spacing: 0.1em; }
 .eco .eco-box { fill: none; stroke: var(--rule-strong); }
 .eco .eco-box--lead { stroke: var(--ember); }
 .eco .eco-line { stroke: var(--rule-strong); stroke-width: 1; fill: none; }
@@ -318,4 +370,76 @@
   .freq-words span { grid-area: auto; font-size: clamp(1.4rem, 5vw, 2.6rem); }
   .origin__lines { display: block; }
   .origin__lines > p { max-width: none; font-size: clamp(1.6rem, 5vw, 3rem); margin-block: var(--s-4); }
+}
+
+
+/* ============================================================
+   HERO — MOBILE COMPOSITION
+   A 16:9 film cannot go full-bleed behind a portrait viewport
+   without cropping to the middle 26% of the frame, which cuts
+   both of his hands out of the shot. So on small screens the
+   film becomes a cinematic band the headline overlaps, and the
+   copy sits beneath it on black — still a full-viewport hero,
+   composed for the screen it is actually on.
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .hero__stage {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 100%;
+    /* the base stage centres its items; a column hero must stretch
+       them, or an absolutely-filled media layer collapses to 0 wide */
+    place-items: start stretch;
+    padding-top: clamp(4.5rem, 12svh, 7rem);
+  }
+
+  .hero .layer--media {
+    position: relative; inset: auto;
+    grid-row: 1;
+    display: block;
+    height: clamp(220px, 34svh, 340px);
+    overflow: hidden;
+  }
+  .hero .layer--copy {
+    position: relative; inset: auto;
+    grid-row: 2;
+    display: block;
+    width: 100%;
+    align-self: end;
+    padding-bottom: clamp(3.5rem, 9svh, 5.5rem);
+  }
+
+  /* keep the parallax over-scan, just inside the band */
+  .hero__film { inset: -4%; width: 108%; height: 108%; }
+
+  .hero__scrim {
+    background:
+      linear-gradient(to top, var(--ink) 0%, rgba(0,0,0,.35) 34%, transparent 68%),
+      linear-gradient(to bottom, rgba(0,0,0,.55) 0%, transparent 40%);
+  }
+
+  /* the headline rides up over the foot of the film */
+  .hero__copy { gap: var(--s-4); }
+  .hero__name { margin-top: calc(var(--s-6) * -1); }
+  .hero__eyebrow { display: none; }
+  .hero__actions { margin-top: var(--s-3); }
+
+  /* The copy fills the lower half on a phone; a scroll cue here would
+     land on top of the CTAs, and a phone needs no invitation to scroll. */
+  .hero .cue { display: none; }
+}
+
+/* Small phones (SE-class, <=680px tall): the band and the full copy
+   cannot both have their preferred size in one viewport, so the film
+   gives up height first and the type tightens. */
+@media (max-width: 760px) and (max-height: 680px) {
+  .hero__stage { padding-top: clamp(3.5rem, 9svh, 5rem); }
+  .hero .layer--media { height: clamp(150px, 24svh, 210px); }
+  .hero .layer--copy { padding-bottom: clamp(2rem, 5svh, 3rem); }
+  .hero__copy { gap: var(--s-3); }
+  .hero__name { font-size: clamp(2.6rem, 13vw, 4rem); margin-top: calc(var(--s-5) * -1); }
+  .hero__sub { gap: var(--s-2); }
+  .hero__sub .t-body { display: none; }   /* the lead line carries it */
+  .hero__actions { margin-top: var(--s-2); }
 }

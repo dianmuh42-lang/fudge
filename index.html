@@ -13,18 +13,18 @@
 <meta property="og:title" content="Fudge Jarcheh — Entrepren-Artist">
 <meta property="og:description" content="Entrepreneur. Artist. Creator. Technologist. Building at the intersection of business, technology, music and creativity.">
 <meta property="og:url" content="https://fudgejarcheh.com/">
-<meta property="og:image" content="https://fudgejarcheh.com/assets/images/hero-stage.svg">
-<meta property="og:image:alt" content="Cinematic portrait stage lit in deep blue with a warm rim light.">
+<meta property="og:image" content="https://fudgejarcheh.com/assets/images/hero-poster.jpg">
+<meta property="og:image:alt" content="Fudge Jarcheh lit in deep blue with a warm amber rim light, hands open.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Fudge Jarcheh — Entrepren-Artist">
 <meta name="twitter:description" content="Entrepreneur. Artist. Creator. Technologist. People are the frequency.">
-<meta name="twitter:image" content="https://fudgejarcheh.com/assets/images/hero-stage.svg">
+<meta name="twitter:image" content="https://fudgejarcheh.com/assets/images/hero-poster.jpg">
 
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/icons/mark.svg">
 <link rel="manifest" href="site.webmanifest">
 
-<link rel="preload" as="image" href="assets/images/hero-stage.svg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/images/hero-poster.jpg" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-latin.woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
@@ -107,13 +107,21 @@
   <div class="scene__stage hero__stage letterbox">
 
     <div class="layer layer--media">
-      <div class="stage-media depth-3" data-range="0 1" data-anim="zoom-in" style="--from:1.04;--to:1.26">
-        <img src="assets/images/hero-stage.svg"
-             alt="Cinematic title plate: a dark studio void lit by deep blue light, with a warm amber rim tracing a standing figure."
-             width="1920" height="2400" fetchpriority="high" decoding="async">
+      <!-- The scroll IS the transport: engine.js maps scene progress onto
+           currentTime. Sources are chosen by viewport in initVideos() so a
+           phone never pulls the desktop master; the poster is also painted
+           as a background so a frame is on screen before the first byte of
+           video arrives, and stays there if video never loads at all. -->
+      <div class="hero__film stage-media depth-3" data-range="0 1" data-anim="zoom-in"
+           style="--from:1.02;--to:1.16;background-image:url(assets/images/hero-poster.jpg)">
+        <video data-scrub-video
+               preload="none" muted playsinline disablepictureinpicture
+               poster="assets/images/hero-poster.jpg"
+               data-film-base="assets/videos/hero-film"
+               width="1280" height="720"
+               aria-label="Fudge Jarcheh in a dark studio, lit deep blue with a warm amber rim, hands open as the camera slowly pulls back."></video>
       </div>
-      <div class="stage-media" aria-hidden="true" data-range="0 1" data-anim="fade-out"
-           style="background:radial-gradient(70% 55% at 50% 42%, rgba(216,96,46,.16), transparent 70%)"></div>
+      <div class="hero__scrim" aria-hidden="true" data-range="0 1" data-anim="fade-out"></div>
     </div>
 
     <div class="layer layer--copy">
@@ -212,13 +220,13 @@
     <div class="layer layer--media" aria-hidden="true"
          style="background:radial-gradient(90% 70% at 50% 40%, rgba(44,107,143,.16), transparent 72%)"></div>
 
-    <div class="layer layer--copy" style="align-content:center">
-      <div class="wrap" style="width:100%">
+    <div class="layer layer--copy layer--fill">
+      <div class="wrap eco-layout">
 
-        <div style="text-align:center;display:grid;gap:var(--s-4);justify-items:center;margin-bottom:var(--s-7);--dist:5vh"
+        <div class="eco-head" style="--dist:5vh"
              data-range="0.02 0.28" data-anim="fade-in enter" data-ease="out">
           <p class="t-meta">The Global Entity</p>
-          <h2 class="t-h1" id="fdg-title">Frequency Digital Group</h2>
+          <h2 class="t-h2" id="fdg-title">Frequency Digital Group</h2>
           <p class="t-body" style="max-width:56ch;margin-inline:auto">
             The global parent entity behind Fudge Jarcheh's portfolio of companies, ventures,
             technology and creative projects. Its purpose is to create, develop and grow ideas
@@ -227,51 +235,51 @@
         </div>
 
         <div class="eco-wrap">
-          <svg class="eco" viewBox="0 0 1000 540" role="img"
+          <svg class="eco" viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet" role="img"
                aria-label="Ecosystem diagram: Fudge Jarcheh leads to Frequency Digital Group, which leads to Review Revolution, Technology and Creative, which lead to Fudge and The Frequency.">
 
             <!-- connectors, drawn in as the section is scrubbed -->
             <g data-range="0.22 0.72" data-ease="io">
-              <path class="eco-line" style="--len:80"  d="M500 74 L500 154"/>
-              <path class="eco-line" style="--len:520" d="M500 216 L500 252 M170 252 L830 252 M170 252 L170 292 M500 252 L500 292 M830 252 L830 292"/>
-              <path class="eco-line" style="--len:520" d="M170 356 L170 396 M830 356 L830 396 M500 356 L500 396 M170 396 L830 396 M500 396 L500 436"/>
+              <path class="eco-line" style="--len:80"  d="M500 56 L500 130"/>
+              <path class="eco-line" style="--len:800" d="M500 190 L500 228 M170 228 L830 228 M170 228 L170 268 M500 228 L500 268 M830 228 L830 268"/>
+              <path class="eco-line" style="--len:800" d="M170 324 L170 364 M500 324 L500 364 M830 324 L830 364 M170 364 L830 364 M500 364 L500 410"/>
             </g>
 
             <!-- nodes -->
             <g class="eco-node" data-range="0.08 0.30" data-anim="fade-in">
-              <rect class="eco-box" x="350" y="24" width="300" height="50"/>
-              <text x="500" y="54" text-anchor="middle">Fudge Jarcheh</text>
+              <rect class="eco-box" x="350" y="10" width="300" height="46"/>
+              <text x="500" y="39" text-anchor="middle">Fudge Jarcheh</text>
             </g>
 
             <g class="eco-node" data-range="0.24 0.44" data-anim="fade-in">
-              <rect class="eco-box eco-box--lead" x="290" y="154" width="420" height="62"/>
-              <text x="500" y="182" text-anchor="middle">Frequency Digital Group</text>
-              <text x="500" y="201" text-anchor="middle" class="eco-sub">Global parent entity</text>
+              <rect class="eco-box eco-box--lead" x="290" y="130" width="420" height="60"/>
+              <text x="500" y="157" text-anchor="middle">Frequency Digital Group</text>
+              <text x="500" y="177" text-anchor="middle" class="eco-sub">Global parent entity</text>
             </g>
 
             <g class="eco-node" data-range="0.42 0.62" data-anim="fade-in">
-              <rect class="eco-box" x="40" y="292" width="260" height="64"/>
-              <text x="170" y="320" text-anchor="middle">Review Revolution</text>
-              <text x="170" y="339" text-anchor="middle" class="eco-sub">Reputation platform</text>
+              <rect class="eco-box" x="40" y="268" width="260" height="56"/>
+              <text x="170" y="293" text-anchor="middle">Review Revolution</text>
+              <text x="170" y="312" text-anchor="middle" class="eco-sub">Reputation platform</text>
 
-              <rect class="eco-box" x="370" y="292" width="260" height="64"/>
-              <text x="500" y="320" text-anchor="middle">Technology</text>
-              <text x="500" y="339" text-anchor="middle" class="eco-sub">AI &amp; products</text>
+              <rect class="eco-box" x="370" y="268" width="260" height="56"/>
+              <text x="500" y="293" text-anchor="middle">Technology</text>
+              <text x="500" y="312" text-anchor="middle" class="eco-sub">AI &amp; products</text>
 
-              <rect class="eco-box" x="700" y="292" width="260" height="64"/>
-              <text x="830" y="320" text-anchor="middle">Creative</text>
-              <text x="830" y="339" text-anchor="middle" class="eco-sub">Media &amp; ideas</text>
+              <rect class="eco-box" x="700" y="268" width="260" height="56"/>
+              <text x="830" y="293" text-anchor="middle">Creative</text>
+              <text x="830" y="312" text-anchor="middle" class="eco-sub">Media &amp; ideas</text>
             </g>
 
             <g class="eco-node" data-range="0.60 0.80" data-anim="fade-in">
-              <rect class="eco-box eco-box--lead" x="330" y="436" width="340" height="56"/>
-              <text x="500" y="470" text-anchor="middle">Fudge &amp; The Frequency</text>
-              <circle class="eco-dot" cx="500" cy="436" r="4"/>
+              <rect class="eco-box eco-box--lead" x="330" y="410" width="340" height="52"/>
+              <text x="500" y="441" text-anchor="middle">Fudge &amp; The Frequency</text>
+              <circle class="eco-dot" cx="500" cy="410" r="4"/>
             </g>
           </svg>
         </div>
 
-        <p style="text-align:center;margin-top:var(--s-7)" data-range="0.72 0.9" data-anim="fade-in">
+        <p class="eco-cta" data-range="0.72 0.9" data-anim="fade-in">
           <a class="btn" href="pages/ventures.html">Discover Frequency Digital Group <span class="btn__arrow" aria-hidden="true">&#8594;</span></a>
         </p>
 
@@ -353,7 +361,7 @@
     </div>
 
     <div class="layer layer--copy" style="align-content:end">
-      <div class="wrap" style="width:100%;padding-bottom:clamp(3rem,9vh,7rem)"
+      <div class="wrap" style="width:100%;padding-bottom:clamp(3rem,7vh,5.5rem);--dist:6vh"
            data-range="0.56 0.78" data-anim="fade-in enter" data-ease="out">
         <p class="t-meta">The Origin</p>
         <h2 class="t-h1" id="origin-title" style="margin-block:var(--s-4)">Fudge &amp; The Frequency</h2>
@@ -525,12 +533,12 @@
     </div>
 
     <div class="grid" style="align-items:start">
-      <p class="t-body" style="grid-column:1 / span 5" data-reveal>
+      <p class="t-body c1-5" data-reveal>
         Features, interviews, podcasts, company coverage and speaking appearances are collected
         here. Nothing is listed until it is confirmed — this page stays empty rather than
         filling itself with claims.
       </p>
-      <div style="grid-column:7 / span 6;--rv-d:120ms" data-reveal>
+      <div style="--rv-d:120ms" data-reveal class="c7-6">
         <div class="empty">
           <span class="t-meta">Nothing published yet</span>
           <p class="t-body">Press and media coverage appears here as it is confirmed.</p>
@@ -570,12 +578,12 @@
 <section class="section" id="contact" data-chapter="13" aria-labelledby="contact-title">
   <div class="wrap">
     <div class="grid" style="align-items:end">
-      <div style="grid-column:1 / span 7">
+      <div class="c1-7">
         <p class="t-meta">Contact</p>
         <h2 class="t-display" id="contact-title" data-split="lines" style="margin-block:var(--s-5)">Let's connect.</h2>
         <p class="t-lead">Business. Ideas. Music. Collaboration. Conversation.</p>
       </div>
-      <div style="grid-column:9 / span 4;display:grid;gap:var(--s-5);justify-items:start" data-reveal>
+      <div style="display:grid;gap:var(--s-5);justify-items:start" data-reveal class="c9-4">
         <p class="t-body">
           Whether it is a company, a piece of technology, a record or a conversation — start here.
         </p>

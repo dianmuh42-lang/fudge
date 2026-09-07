@@ -75,8 +75,10 @@ Model: `soul_2` (quality `2k`) · reference image required · aspect `3:4`
 > magazine-profile rather than corporate. **Colour treatment** Cooler and flatter
 > than the hero, slightly lifted blacks, restrained contrast, fine grain.
 
-### 07 — `assets/videos/hero-film.mp4` (1920×1080, ~15s, scroll-scrubbed)
-Model: `kling3_0` or `seedance_2_5` · reference image required · aspect `16:9`
+### 07 — `assets/videos/hero-film.mp4` — **DELIVERED**
+Supplied as a finished 1280×720 / 24fps / 10s clip generated from the reference
+photograph. It is live as the scroll-scrubbed hero. The prompt below records
+what it contains, for regenerating or extending it.
 
 > **Subject** Fudge Jarcheh standing still in a dark void as the camera moves
 > around and toward him. **Composition** Opens wide with the figure small and
@@ -91,10 +93,20 @@ Model: `kling3_0` or `seedance_2_5` · reference image required · aspect `16:9`
 > subject movement beyond breathing. Constant velocity so it scrubs cleanly at
 > any scroll speed.
 
-*Encode for scrubbing: `-g 8` (dense keyframes), `-crf 26`, `faststart`, muted,
-under 4 MB. Then swap the hero `<img>` for
-`<video data-scrub-video muted playsinline preload="auto" poster="…">` — the
-engine already drives `currentTime` from scene progress.*
+**Encoding actually used** — the delivered source carried only 4 keyframes
+across 10 seconds, which stutters under a seek-per-frame scrub load:
+
+```
+ffmpeg -i src.mp4 -an -c:v libx264 -profile:v high -pix_fmt yuv420p \
+  -g 4 -keyint_min 4 -sc_threshold 0 -bf 0 \
+  -crf 27 -preset slow -movflags +faststart hero-film.mp4
+```
+
+`-g 4` gives 60 keyframes (one per 4 frames), `-bf 0` drops B-frames so seeks
+never depend on a later frame, `-an` strips audio. Repeat at `scale=960:-2`
+(crf 28) and `scale=720:-2` (crf 30), then the same three as VP9/WebM with
+`-auto-alt-ref 0 -lag-in-frames 0`. Poster frames come from frame 0 at each
+width. `engine.js` resolves tier and format at boot.
 
 ### 09 — `assets/images/about-portrait.webp` (1400×1750, 4:5)
 Model: `soul_2` · reference image required · aspect `3:4`

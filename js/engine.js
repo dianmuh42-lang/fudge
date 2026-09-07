@@ -154,19 +154,7 @@
     }
     if (!revealIO) {
       revealIO = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          var el = e.target;
-          var group = el.closest('[data-reveal-group]');
-          if (group && !group.dataset.staggered) {
-            group.dataset.staggered = '1';
-            group.querySelectorAll('[data-reveal]').forEach(function (k, i) {
-              k.style.setProperty('--rv-d', (i * 110) + 'ms');
-            });
-          }
-          el.classList.add('is-in');
-          revealIO.unobserve(el);
-        });
+        entries.forEach(function (e) { if (e.isIntersecting) reveal(e.target); });
       }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
     }
     targets.forEach(function (el) {
@@ -174,6 +162,30 @@
       revealSeen.add(el);
       revealIO.observe(el);
     });
+
+    /* Anything already on screen at load must be visible NOW. The
+       observer's -12% bottom margin means an element sitting in the
+       last sliver of the first viewport never intersects until the
+       user scrolls — which silently hid the hero's primary CTA. */
+    requestAnimationFrame(function () {
+      targets.forEach(function (el) {
+        if (el.classList.contains('is-in')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) reveal(el);
+      });
+    });
+  }
+
+  function reveal(el) {
+    var group = el.closest('[data-reveal-group]');
+    if (group && !group.dataset.staggered) {
+      group.dataset.staggered = '1';
+      group.querySelectorAll('[data-reveal]').forEach(function (k, i) {
+        k.style.setProperty('--rv-d', (i * 110) + 'ms');
+      });
+    }
+    el.classList.add('is-in');
+    if (revealIO) revealIO.unobserve(el);
   }
 
   /* ============================================================
@@ -399,6 +411,51 @@
      VIDEO HYGIENE — muted, never autoplay with sound, pause offscreen
      ============================================================ */
 
+  /* Resolve the film for the viewport actually in front of us, once.
+     Never re-pick on resize — that restarts the download and throws away
+     the buffer for no visual gain.
+
+     Size tier keeps a phone off the desktop master. Format prefers H.264
+     (smaller here at the keyframe density scrubbing needs, and supported
+     everywhere) and falls back to VP9 for any engine without it. */
+  function pickSource(v) {
+    var base = v.getAttribute('data-film-base');
+    if (!base) return v.getAttribute('data-src') || '';
+    var w = window.innerWidth;
+    var tier = w <= 760 ? '-720' : w <= 1280 ? '-960' : '';
+    var mp4 = v.canPlayType('video/mp4; codecs="avc1.4d401f"');
+    return base + tier + (mp4 === 'probably' || mp4 === 'maybe' ? '.mp4' : '.webm');
+  }
+
+  function loadScrubVideos() {
+    var conn = navigator.connection || navigator.webkitConnection || {};
+    var frugal = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
+
+    document.querySelectorAll('video[data-scrub-video]').forEach(function (v) {
+      /* Reduced motion or Save-Data: the poster is the hero. No megabytes
+         are spent on a film the visitor has asked not to be shown. */
+      if (reduced.matches || frugal) {
+        v.setAttribute('data-film', 'poster-only');
+        return;
+      }
+      if (v.dataset.filmLoaded === '1') return;
+      var src = pickSource(v);
+      if (!src) return;
+      v.dataset.filmLoaded = '1';
+      v.preload = 'auto';
+      v.src = src;
+      v.addEventListener('loadeddata', function () {
+        v.setAttribute('data-film', 'ready');
+        kick();
+      }, { once: true });
+      v.addEventListener('error', function () {
+        /* the poster painted on the container stays visible */
+        v.setAttribute('data-film', 'failed');
+      }, { once: true });
+      v.load();
+    });
+  }
+
   function initVideos() {
     var all = document.querySelectorAll('video');
     all.forEach(function (v) {
@@ -408,6 +465,8 @@
       v.setAttribute('playsinline', '');
       v.removeAttribute('controls');
     });
+
+    loadScrubVideos();
 
     var loops = document.querySelectorAll('video[data-loop]');
     if (!loops.length || !('IntersectionObserver' in window)) return;
