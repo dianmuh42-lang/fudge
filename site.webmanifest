@@ -1,0 +1,12 @@
+{
+  "name": "Fudge Jarcheh — Entrepren-Artist",
+  "short_name": "Fudge Jarcheh",
+  "description": "Entrepreneur. Artist. Creator. Technologist. People are the frequency.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    { "src": "/assets/icons/mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

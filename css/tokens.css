@@ -1,0 +1,124 @@
+/* ============================================================
+   FUDGE JARCHEH — DESIGN TOKENS
+   One coherent colour, type, spacing, motion and depth system.
+   ============================================================ */
+
+:root {
+  /* ---- Colour: monochrome core -------------------------- */
+  --ink:            #000000;
+  --ink-90:         #060708;
+  --ink-80:         #0B0D0F;
+  --charcoal:       #121517;
+  --charcoal-2:     #1B1F22;
+  --charcoal-3:     #24292D;
+  --grey:           #5E6569;
+  --grey-2:         #8B9297;
+  --grey-3:         #B4BABE;
+  --paper:          #F3F1EB;
+  --paper-2:        #E6E2D9;
+  --paper-3:        #D3CEC3;
+
+  /* ---- Colour: lighting language (imagery, not UI) ------ */
+  --ember:          #D8602E;   /* warm rim light */
+  --ember-soft:     #E68A5C;
+  --signal:         #2C6B8F;   /* deep cinematic blue */
+  --signal-deep:    #0E2433;
+
+  /* ---- Semantic ----------------------------------------- */
+  --bg:             var(--ink);
+  --bg-raised:      var(--charcoal);
+  --fg:             var(--paper);
+  --fg-muted:       var(--grey-2);
+  --fg-faint:       var(--grey);
+  --rule:           rgba(243, 241, 235, 0.14);
+  --rule-strong:    rgba(243, 241, 235, 0.32);
+  --accent:         var(--ember);
+
+  /* Inverted (paper) surfaces */
+  --bg-inv:         var(--paper);
+  --fg-inv:         var(--ink);
+  --fg-inv-muted:   #4A4F53;
+  --rule-inv:       rgba(0, 0, 0, 0.16);
+
+  /* ---- Typography --------------------------------------- */
+  --font-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body:    "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Fluid scale — display is deliberately oversized */
+  --t-mega:    clamp(3.4rem, 15.5vw, 15rem);
+  --t-display: clamp(2.75rem, 10.5vw, 9.5rem);
+  --t-h1:      clamp(2.4rem, 7.6vw, 6.75rem);
+  --t-h2:      clamp(1.9rem, 5.4vw, 4.25rem);
+  --t-h3:      clamp(1.35rem, 3vw, 2.25rem);
+  --t-h4:      clamp(1.1rem, 1.9vw, 1.4rem);
+  --t-lead:    clamp(1.05rem, 1.85vw, 1.45rem);
+  --t-body:    clamp(0.975rem, 1.05vw, 1.0625rem);
+  --t-small:   0.875rem;
+  --t-meta:    0.6875rem;
+
+  --lh-display: 0.86;
+  --lh-head:    0.94;
+  --lh-body:    1.62;
+
+  --tr-display: -0.045em;   /* tight editorial tracking */
+  --tr-head:    -0.03em;
+  --tr-body:    -0.011em;
+  --tr-meta:    0.22em;     /* wide technical caps */
+
+  /* ---- Space (8px rhythm) -------------------------------- */
+  --s-1:  0.25rem;  --s-2:  0.5rem;   --s-3:  0.75rem;  --s-4:  1rem;
+  --s-5:  1.5rem;   --s-6:  2rem;     --s-7:  3rem;     --s-8:  4rem;
+  --s-9:  6rem;     --s-10: 8rem;     --s-11: 12rem;    --s-12: 16rem;
+
+  --section-y: clamp(5rem, 13vh, 11rem);
+
+  /* ---- Measure & gutters -------------------------------- */
+  --gutter:     clamp(1.25rem, 4.5vw, 4.5rem);
+  --max:        1680px;
+  --max-text:   62ch;
+  --max-narrow: 46ch;
+
+  /* ---- Radius / border / shadow -------------------------- */
+  --r-0: 0px;
+  --r-1: 2px;
+  --r-2: 4px;
+  --border: 1px solid var(--rule);
+  --shadow-plate: 0 40px 120px -40px rgba(0, 0, 0, 0.9);
+  --shadow-lift:  0 24px 70px -28px rgba(0, 0, 0, 0.85);
+
+  /* ---- Motion ------------------------------------------- */
+  --dur-1: 240ms;
+  --dur-2: 520ms;
+  --dur-3: 900ms;
+  --dur-4: 1400ms;
+  --ease:       cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-film:  cubic-bezier(0.33, 0, 0.12, 1);
+
+  /* ---- Depth (z) ---------------------------------------- */
+  --z-stage: 1;
+  --z-copy: 4;
+  --z-chrome: 40;
+  --z-nav: 60;
+  --z-menu: 80;
+  --z-cursor: 100;
+
+  /* ---- Engine-driven (set by js/engine.js) --------------- */
+  --p: 0;      /* scene progress 0..1 */
+  --q: 0;      /* ranged element progress 0..1 */
+  --vel: 0;    /* smoothed scroll velocity -1..1 */
+  --vh: 1vh;   /* stable viewport unit on mobile */
+
+  /* ---- Film grain texture (inline, no binary asset) ------ */
+  --grain-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Tablet / mobile refinements */
+@media (max-width: 900px) {
+  :root {
+    --section-y: clamp(4rem, 10vh, 7rem);
+    --tr-display: -0.035em;
+  }
+}

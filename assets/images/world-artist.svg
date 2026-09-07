@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500" role="img" preserveAspectRatio="xMidYMid slice">
+<defs>
+<filter id="g33" x="0" y="0" width="100%" height="100%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="33" stitchTiles="stitch"/>
+  <feColorMatrix type="saturate" values="0"/>
+</filter>
+<filter id="b33" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="82.5"/>
+</filter>
+<filter id="bs33" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="22.5"/>
+</filter>
+<radialGradient id="v33" cx="50%" cy="46%" r="72%">
+  <stop offset="42%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#000" stop-opacity="0.88"/>
+</radialGradient>
+<radialGradient id="ga33" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#D8602E" stop-opacity="0.42"/><stop offset="55%" stop-color="#D8602E" stop-opacity="0.118"/><stop offset="100%" stop-color="#D8602E" stop-opacity="0"/></radialGradient><radialGradient id="gb33" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E68A5C" stop-opacity="0.2"/><stop offset="55%" stop-color="#E68A5C" stop-opacity="0.056"/><stop offset="100%" stop-color="#E68A5C" stop-opacity="0"/></radialGradient><linearGradient id="fl33" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#150C08"/><stop offset="100%" stop-color="#000"/>
+    </linearGradient></defs><rect width="1200" height="1500" fill="url(#fl33)"/><ellipse cx="600.0" cy="540.0" rx="840.0" ry="840.0" fill="url(#ga33)"/><ellipse cx="264.0" cy="1200.0" rx="432.0" ry="432.0" fill="url(#gb33)"/><path d="M480.0 0 L720.0 0 L983.9999999999999 1500 L216.0 1500 Z" fill="#D8602E" opacity="0.10" filter="url(#bs33)"/><polyline points="0,990.0 16,991.1 32,994.2 48,999.0 64,1004.8 80,1010.8 96,1016.1 112,1019.8 128,1021.2 144,1019.8 160,1015.1 176,1007.2 192,996.3 208,983.2 224,968.6 240,953.7 256,939.7 272,927.9 288,919.4 304,915.1 320,915.8 336,921.7 352,932.7 368,948.5 384,968.0 400,990.0 416,1013.1 432,1035.8 448,1056.3 464,1073.1 480,1085.0 496,1090.9 512,1090.4 528,1083.3 544,1070.0 560,1051.4 576,1028.6 592,1003.2 608,976.8 624,951.4 640,928.6 656,910.0 672,896.7 688,889.6 704,889.1 720,895.0 736,906.9 752,923.7 768,944.2 784,966.9 800,990.0 816,1012.0 832,1031.5 848,1047.3 864,1058.3 880,1064.2 896,1064.9 912,1060.6 928,1052.1 944,1040.3 960,1026.3 976,1011.4 992,996.8 1008,983.7 1024,972.8 1040,964.9 1056,960.2 1072,958.8 1088,960.2 1104,963.9 1120,969.2 1136,975.2 1152,981.0 1168,985.8 1184,988.9 1200,990.0" fill="none" stroke="#E68A5C" stroke-width="2" opacity="0.7"/><rect width="1200" height="1500" fill="url(#v33)"/>
+<rect width="1200" height="1500" filter="url(#g33)" opacity="0.15" style="mix-blend-mode:overlay"/>
+</svg>

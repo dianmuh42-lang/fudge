@@ -1,0 +1,321 @@
+/* ============================================================
+   FUDGE JARCHEH — CINEMA
+   Scroll-driven motion. The engine writes --p (scene progress),
+   --q (ranged element progress) and --vel (velocity); CSS does
+   the rest, so animation stays on the compositor.
+   ============================================================ */
+
+/* ---------- Scenes: a tall scroll track + a pinned stage ----- */
+
+.scene {
+  position: relative;
+  /* --scene-len is the scroll distance in viewport heights */
+  height: calc(var(--scene-len, 3) * 100 * var(--vh));
+}
+
+.scene__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  height: calc(100 * var(--vh));
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+/* Layer inside a stage */
+.layer {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  will-change: transform, opacity;
+}
+.layer--media { z-index: var(--z-stage); }
+.layer--copy  { z-index: var(--z-copy); pointer-events: none; }
+.layer--copy a, .layer--copy button { pointer-events: auto; }
+
+/* ---------- Scroll-driven primitives -------------------------
+   Each reads --q (0..1) for the element's own scroll range.
+   -------------------------------------------------------------- */
+
+/* Slow cinematic push-in / pull-out */
+[data-anim~="zoom-in"] {
+  transform: scale(calc(var(--from, 1) + (var(--to, 1.16) - var(--from, 1)) * var(--q)));
+}
+[data-anim~="zoom-out"] {
+  transform: scale(calc(var(--from, 1.16) - (var(--from, 1.16) - var(--to, 1)) * var(--q)));
+}
+
+/* Vertical drift (parallax within a pinned stage) */
+[data-anim~="rise"]  { transform: translate3d(0, calc(var(--dist, 12vh) * var(--q) * -1), 0); }
+[data-anim~="sink"]  { transform: translate3d(0, calc(var(--dist, 12vh) * var(--q)), 0); }
+[data-anim~="enter"] { transform: translate3d(0, calc(var(--dist, 12vh) * (1 - var(--q))), 0); }
+[data-anim~="pan-x"] { transform: translate3d(calc(var(--dist, 8vw) * (var(--q) - 0.5) * 2), 0, 0); }
+
+/* Opacity envelope: in, hold, out */
+[data-anim~="fade-in"]  { opacity: var(--q); }
+[data-anim~="fade-out"] { opacity: calc(1 - var(--q)); }
+[data-anim~="fade-through"] {
+  /* fades up over the first third, holds, fades away over the last third */
+  opacity: clamp(0, min(var(--q) * 3, (1 - var(--q)) * 3), 1);
+}
+
+/* Focus pull */
+[data-anim~="blur-out"] { filter: blur(calc(var(--q) * var(--amt, 14px))); }
+[data-anim~="blur-in"]  { filter: blur(calc((1 - var(--q)) * var(--amt, 14px))); }
+
+/* Masking reveal — a film wipe */
+[data-anim~="wipe-up"]   { clip-path: inset(calc((1 - var(--q)) * 100%) 0 0 0); }
+[data-anim~="wipe-down"] { clip-path: inset(0 0 calc((1 - var(--q)) * 100%) 0); }
+[data-anim~="iris"] {
+  clip-path: circle(calc(6% + var(--q) * 88%) at 50% 50%);
+}
+
+/* Letter-spacing bloom on big type */
+[data-anim~="track"] {
+  letter-spacing: calc(var(--tr-display) + (1 - var(--q)) * 0.05em);
+}
+
+/* Horizontal rail (The Evolution, desktop) */
+[data-anim~="rail"] {
+  transform: translate3d(calc(var(--q) * (100vw - 100%) ), 0, 0);
+}
+
+/* Combine transforms safely by nesting: outer does translate, inner scale */
+.xf { will-change: transform; }
+
+/* ---------- Parallax outside pinned scenes -------------------- */
+/* Engine writes --y (px) from element position in the viewport. */
+[data-parallax] {
+  transform: translate3d(0, var(--y, 0px), 0);
+  will-change: transform;
+}
+
+/* ---------- Reveal on enter (IntersectionObserver) ------------ */
+
+[data-reveal] {
+  --rv-y: 26px;
+  opacity: 0;
+  transform: translate3d(0, var(--rv-y), 0);
+  transition:
+    opacity var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-out),
+    clip-path var(--dur-3) var(--ease-out),
+    filter var(--dur-3) var(--ease-out);
+  transition-delay: var(--rv-d, 0ms);
+}
+[data-reveal].is-in { opacity: 1; transform: translate3d(0, 0, 0); }
+
+/* Film wipe. The clip lands on the MEDIA, never on the observed
+   element: an element clipped to zero area never reports as
+   intersecting, so clipping the observer target deadlocks the
+   reveal and the image stays hidden forever. */
+[data-reveal="mask"] { opacity: 1; transform: none; }
+[data-reveal="mask"] > img,
+[data-reveal="mask"] > video,
+[data-reveal="mask"] > svg,
+[data-reveal="mask"] > canvas {
+  clip-path: inset(0 0 100% 0);
+  transform: scale(1.06);
+  transition: clip-path 1100ms var(--ease-out), transform 1400ms var(--ease-out);
+  transition-delay: var(--rv-d, 0ms);
+}
+[data-reveal="mask"].is-in > img,
+[data-reveal="mask"].is-in > video,
+[data-reveal="mask"].is-in > svg,
+[data-reveal="mask"].is-in > canvas {
+  clip-path: inset(0 0 0% 0);
+  transform: scale(1);
+}
+
+[data-reveal="scale"] {
+  transform: scale(1.08); opacity: 0;
+}
+[data-reveal="scale"].is-in { transform: scale(1); opacity: 1; }
+
+[data-reveal="blur"] { filter: blur(12px); opacity: 0; transform: none; }
+[data-reveal="blur"].is-in { filter: blur(0); opacity: 1; }
+
+/* Split-text line reveal — js/engine.js wraps each line */
+.split { display: block; }
+.split__line { display: block; overflow: hidden; }
+.split__inner {
+  display: block;
+  transform: translate3d(0, 108%, 0);
+  transition: transform 1000ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.is-in .split__inner,
+.split.is-in .split__inner { transform: translate3d(0, 0, 0); }
+
+/* Word reveal */
+.split__word { display: inline-block; overflow: hidden; vertical-align: top; }
+.split__word > i {
+  display: inline-block; font-style: inherit;
+  transform: translate3d(0, 110%, 0);
+  transition: transform 900ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.is-in .split__word > i { transform: translate3d(0, 0, 0); }
+
+/* ---------- Sequential statement stacks (manifesto) ----------- */
+
+.statements { display: grid; place-items: center; text-align: center; }
+.statement {
+  grid-area: 1 / 1;
+  max-width: 22ch;
+  opacity: 0;
+  transform: translate3d(0, 4vh, 0) scale(0.98);
+  filter: blur(6px);
+  transition: opacity 700ms var(--ease), transform 900ms var(--ease-out), filter 700ms var(--ease);
+}
+.statement.is-live {
+  opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0);
+}
+
+/* ---------- Scroll cue ---------------------------------------- */
+
+.cue {
+  position: absolute; left: 50%; bottom: clamp(1.5rem, 4vh, 3rem);
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: var(--s-3);
+  z-index: 8;
+}
+.cue__line {
+  width: 1px; height: clamp(38px, 7vh, 64px);
+  background: linear-gradient(to bottom, transparent, var(--paper));
+  transform-origin: top;
+  animation: cue-drop 2600ms var(--ease-inout) infinite;
+}
+@keyframes cue-drop {
+  0%, 100% { transform: scaleY(0.25); opacity: 0.4; }
+  45%      { transform: scaleY(1);    opacity: 1; }
+  70%      { transform: scaleY(1);    opacity: 0; }
+}
+
+/* ---------- Media stage helpers ------------------------------- */
+
+.stage-media {
+  position: absolute; inset: -6%;      /* bleed so parallax never shows an edge */
+  width: 112%; height: 112%;
+}
+.stage-media > img,
+.stage-media > video,
+.stage-media > svg { width: 100%; height: 100%; object-fit: cover; }
+
+/* Depth layers: nearer layers move more */
+.depth-1 { --dist: 4vh; }
+.depth-2 { --dist: 9vh; }
+.depth-3 { --dist: 16vh; }
+
+/* Colour grade passes applied over media */
+/* Uses ::before so it can sit under .plate--vignette's ::after
+   rather than replacing it. */
+.grade::before {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  mix-blend-mode: soft-light;
+  background: linear-gradient(200deg, var(--signal) 0%, transparent 46%, var(--ember) 100%);
+  opacity: 0.5;
+}
+.grade--cool::before { background: linear-gradient(180deg, var(--signal) 0%, transparent 70%); opacity: 0.55; }
+.grade--warm::before { background: radial-gradient(80% 60% at 50% 60%, var(--ember) 0%, transparent 68%); opacity: 0.4; }
+
+/* ---------- Marquee (used sparingly, on the philosophy band) --- */
+
+.marquee { overflow: hidden; width: 100%; }
+.marquee__track {
+  display: flex; width: max-content;
+  will-change: transform;
+  /* engine nudges with --vel so it responds to scroll direction */
+  animation: marquee 46s linear infinite;
+}
+.marquee__track > * { padding-inline: 0.5em; }
+@keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+
+/* ---------- Horizontal evolution rail -------------------------- */
+
+.rail { display: flex; align-items: stretch; height: 100%; will-change: transform; }
+.rail__panel {
+  flex: 0 0 clamp(320px, 46vw, 720px);
+  padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 3.5vw, 4rem);
+  border-left: 1px solid var(--rule);
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-7);
+  position: relative;
+}
+.rail__panel:first-child { border-left: 0; }
+
+/* ---------- Ecosystem diagram --------------------------------- */
+
+.eco { width: 100%; height: auto; }
+.eco .eco-node { transition: opacity 700ms var(--ease); }
+.eco .eco-line {
+  stroke-dasharray: var(--len, 300);
+  stroke-dashoffset: calc(var(--len, 300) * (1 - var(--q, 0)));
+}
+.eco .eco-pulse { transform-box: fill-box; transform-origin: center; }
+
+/* ============================================================
+   REDUCED MOTION — everything resolves to its end state
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .scene { height: auto !important; }
+  .scene__stage {
+    position: relative; height: auto; min-height: auto;
+    padding-block: var(--section-y);
+    display: block; overflow: visible;
+  }
+  .layer { position: relative; inset: auto; display: block; }
+  .layer--media { margin-bottom: var(--s-6); }
+  .stage-media { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+
+  [data-anim], [data-parallax] { transform: none !important; filter: none !important; }
+  [data-anim~="fade-in"], [data-anim~="fade-out"], [data-anim~="fade-through"] { opacity: 1 !important; }
+  [data-anim~="wipe-up"], [data-anim~="wipe-down"], [data-anim~="iris"] { clip-path: none !important; }
+  [data-anim~="track"] { letter-spacing: var(--tr-display) !important; }
+  [data-anim~="rail"] { transform: none !important; }
+
+  [data-reveal] { opacity: 1 !important; transform: none !important; clip-path: none !important; filter: none !important; }
+  [data-reveal="mask"] > * { clip-path: none !important; transform: none !important; }
+  .split__inner, .split__word > i { transform: none !important; }
+  .statement { position: static; opacity: 1 !important; transform: none !important; filter: none !important; margin-block: var(--s-6); }
+  .statements { display: block; }
+
+  .grain { animation: none; }
+  .cue { display: none; }
+  .marquee__track { animation: none; transform: none; }
+
+  /* The horizontal rail becomes an honest vertical stack */
+  .rail { flex-direction: column; }
+  .rail__panel { flex: none; border-left: 0; border-top: 1px solid var(--rule); }
+}
+
+/* ============================================================
+   MOBILE — designed interactions, not a stacked desktop
+   ============================================================ */
+
+@media (max-width: 900px) {
+  /* Shorter scroll tracks so scenes do not feel endless on a phone */
+  .scene { height: calc(var(--scene-len-m, var(--scene-len, 3)) * 100 * var(--vh)); }
+
+  .rail__panel { flex-basis: 86vw; }
+
+  /* Evolution: the pinned rail is replaced wholesale by a
+     purpose-built vertical interaction — the scroll track goes too,
+     so no empty space is left behind. */
+  .scene.evolution { display: none; }
+  .evolution__stack { display: block; }
+}
+
+@media (min-width: 901px) {
+  .evolution__stack { display: none; }
+}
+
+/* Never let a horizontal section leak into the page scroll */
+.no-overflow { overflow-x: clip; max-width: 100vw; }

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" preserveAspectRatio="xMidYMid slice">
+<defs>
+<filter id="g43" x="0" y="0" width="100%" height="100%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="43" stitchTiles="stitch"/>
+  <feColorMatrix type="saturate" values="0"/>
+</filter>
+<filter id="b43" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="88.0"/>
+</filter>
+<filter id="bs43" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="24.0"/>
+</filter>
+<radialGradient id="v43" cx="50%" cy="46%" r="72%">
+  <stop offset="42%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#000" stop-opacity="0.88"/>
+</radialGradient>
+<radialGradient id="ga43" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1E4E6B" stop-opacity="0.36"/><stop offset="55%" stop-color="#1E4E6B" stop-opacity="0.101"/><stop offset="100%" stop-color="#1E4E6B" stop-opacity="0"/></radialGradient><linearGradient id="fl43" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#071018"/><stop offset="100%" stop-color="#000"/>
+    </linearGradient></defs><rect width="1600" height="1000" fill="url(#fl43)"/><ellipse cx="800.0" cy="440.0" rx="992.0" ry="992.0" fill="url(#ga43)"/><line x1="32" y1="0" x2="-96" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="131" y1="0" x2="3" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="230" y1="0" x2="102" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="330" y1="0" x2="202" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="429" y1="0" x2="301" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="528" y1="0" x2="400" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="627" y1="0" x2="499" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="726" y1="0" x2="598" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="826" y1="0" x2="698" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="925" y1="0" x2="797" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="1024" y1="0" x2="896" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="1123" y1="0" x2="995" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="1222" y1="0" x2="1094" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="1322" y1="0" x2="1194" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="1421" y1="0" x2="1293" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><line x1="1520" y1="0" x2="1392" y2="1000" stroke="#1E4E6B" stroke-width="1" opacity="0.16"/><rect width="1600" height="1000" fill="url(#v43)"/>
+<rect width="1600" height="1000" filter="url(#g43)" opacity="0.14" style="mix-blend-mode:overlay"/>
+</svg>

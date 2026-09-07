@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200" role="img" preserveAspectRatio="xMidYMid slice">
+<defs>
+<filter id="g56" x="0" y="0" width="100%" height="100%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="56" stitchTiles="stitch"/>
+  <feColorMatrix type="saturate" values="0"/>
+</filter>
+<filter id="b56" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="105.6"/>
+</filter>
+<filter id="bs56" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="28.8"/>
+</filter>
+<radialGradient id="v56" cx="50%" cy="46%" r="72%">
+  <stop offset="42%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#000" stop-opacity="0.88"/>
+</radialGradient>
+<radialGradient id="ga56" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#D8602E" stop-opacity="0.36"/><stop offset="55%" stop-color="#D8602E" stop-opacity="0.101"/><stop offset="100%" stop-color="#D8602E" stop-opacity="0"/></radialGradient><linearGradient id="fl56" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#0B0A09"/><stop offset="100%" stop-color="#000"/>
+    </linearGradient></defs><rect width="1920" height="1200" fill="url(#fl56)"/><ellipse cx="960.0" cy="528.0" rx="1190.4" ry="1190.4" fill="url(#ga56)"/><rect x="0" y="600" width="1920" height="14" fill="#D8602E" opacity="0.55" filter="url(#bs56)"/><rect width="1920" height="1200" fill="url(#v56)"/>
+<rect width="1920" height="1200" filter="url(#g56)" opacity="0.14" style="mix-blend-mode:overlay"/>
+</svg>

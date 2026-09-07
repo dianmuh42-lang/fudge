@@ -1,0 +1,321 @@
+/* ============================================================
+   FUDGE JARCHEH — COMPONENTS
+   Editorial blocks used across the homepage and interior pages.
+   ============================================================ */
+
+/* ---------- Hero -------------------------------------------- */
+
+.hero { --scene-len: 2.1; --scene-len-m: 1.9; }
+.hero__stage { background: var(--ink); }
+
+.hero__copy {
+  position: relative; z-index: 5;
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid; gap: var(--s-5);
+  align-content: center;
+  text-align: left;
+}
+.hero__eyebrow { display: flex; align-items: center; gap: var(--s-4); }
+.hero__eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); max-width: 220px; }
+
+.hero__name {
+  font-size: var(--t-mega);
+  margin-block: 0.02em -0.04em;
+}
+.hero__sub { display: grid; gap: var(--s-3); max-width: 46ch; }
+.hero__motto {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ember);
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-top: var(--s-4); }
+
+/* ---------- Introduction (two-column editorial) -------------- */
+
+.intro__grid { align-items: start; }
+.intro__portrait { grid-column: 1 / span 5; position: relative; }
+.intro__body { grid-column: 7 / span 6; display: grid; gap: var(--s-6); }
+@media (max-width: 900px) {
+  .intro__portrait { grid-column: 1 / -1; }
+  .intro__body { grid-column: 1 / -1; }
+}
+.intro__portrait .plate { aspect-ratio: 4 / 5; }
+.intro__pull {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.9rem);
+  font-weight: 600; line-height: 1.02;
+  letter-spacing: var(--tr-head); text-transform: uppercase;
+  text-wrap: balance;
+}
+.intro__defn {
+  border-left: 2px solid var(--ember);
+  padding-left: var(--s-5);
+  display: grid; gap: var(--s-2);
+}
+
+/* ---------- Ecosystem (Frequency Digital Group) -------------- */
+
+.eco-wrap {
+  position: relative;
+  width: 100%; max-width: 1100px; margin-inline: auto;
+  padding-block: var(--s-6);
+}
+.eco { overflow: visible; }
+.eco text {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; fill: var(--paper);
+}
+.eco text.eco-sub { fill: var(--grey-2); font-size: 9.5px; }
+.eco .eco-box { fill: none; stroke: var(--rule-strong); }
+.eco .eco-box--lead { stroke: var(--ember); }
+.eco .eco-line { stroke: var(--rule-strong); stroke-width: 1; fill: none; }
+.eco .eco-dot { fill: var(--ember); }
+
+/* ---------- Venture ------------------------------------------ */
+
+.venture { display: grid; gap: var(--s-7); grid-template-columns: 1.15fr 1fr; align-items: center; }
+@media (max-width: 900px) { .venture { grid-template-columns: 1fr; gap: var(--s-6); } }
+.venture__media { aspect-ratio: 16 / 11; }
+.venture__body { display: grid; gap: var(--s-5); justify-items: start; }
+
+.spec { display: grid; gap: var(--s-3); width: 100%; }
+.spec > div {
+  display: flex; gap: var(--s-4); justify-content: space-between;
+  padding-block: var(--s-3); border-top: 1px solid var(--rule);
+}
+.spec dd { margin: 0; }
+
+/* ---------- Origin / music film scene ------------------------ */
+
+.origin { --scene-len: 3.4; --scene-len-m: 2.8; }
+
+/* The three opening statements share ONE cell so each lands
+   centred as the previous clears — stacked rows would push the
+   first off the top of the stage. */
+.origin__lines { display: grid; place-items: center; text-align: center; width: 100%; }
+.origin__lines > p {
+  grid-area: 1 / 1;
+  max-width: 15ch;
+  font-size: clamp(2.4rem, 8.4vw, 7.5rem);
+  line-height: 0.96;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- People Are The Frequency ------------------------- */
+
+.frequency { --scene-len: 4; --scene-len-m: 3.4; }
+.frequency__stage { background: #000; }
+/* Six fragments stacked in ONE cell, so each lands dead centre as
+   the last one clears — a cut, not a list building down the page. */
+.freq-words { display: grid; place-items: center; text-align: center; }
+.freq-words span {
+  grid-area: 1 / 1;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 9vw, 7rem);
+  font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--tr-display); line-height: 1;
+  white-space: nowrap;
+}
+
+/* The resonance field behind the words */
+.freq-field { z-index: 0; opacity: 0.7; }
+
+/* ---------- Evolution ---------------------------------------- */
+
+.evolution { --scene-len: 4.2; }
+.evolution__stage { display: block; }
+.evolution__head {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+  padding: var(--s-8) var(--gutter) 0;
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-5);
+  pointer-events: none;
+}
+.evolution__rail { height: 100%; padding-top: clamp(7rem, 18vh, 12rem); }
+.rail__index { margin-top: auto; color: var(--fg-faint); }
+
+.evolution__stack { padding-block: var(--section-y); }
+.stagecard {
+  padding-block: var(--s-7);
+  border-top: 1px solid var(--rule);
+  display: grid; gap: var(--s-4);
+}
+.stagecard__head { display: flex; justify-content: space-between; gap: var(--s-4); }
+
+/* ---------- Worlds ------------------------------------------- */
+
+.worlds {
+  display: grid; gap: var(--s-7) var(--s-5);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1100px) { .worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px)  { .worlds { grid-template-columns: 1fr; } }
+
+.world {
+  --mx: 0; --my: 0;
+  display: grid; gap: var(--s-5);
+  align-content: start;
+}
+.world__media {
+  aspect-ratio: 4 / 5; overflow: hidden;
+  transform: perspective(900px)
+             rotateY(calc(var(--mx) * 5deg))
+             rotateX(calc(var(--my) * -5deg));
+  transition: transform 700ms var(--ease-out);
+}
+.world__media img {
+  transform: scale(1.06) translate3d(calc(var(--mx) * -14px), calc(var(--my) * -14px), 0);
+  transition: transform 900ms var(--ease-out), filter 700ms var(--ease);
+  filter: grayscale(0.45) contrast(1.05);
+}
+.world:hover .world__media img { filter: grayscale(0) contrast(1.08); }
+.world__body { display: grid; gap: var(--s-3); justify-items: start; }
+.world__body .t-body { font-size: var(--t-small); }
+
+/* ---------- Currently building -------------------------------- */
+
+.builds { display: grid; }
+.build {
+  display: grid; align-items: baseline; gap: var(--s-3) var(--s-5);
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "num name status" ". note .";
+  padding-block: var(--s-6);
+  border-top: 1px solid var(--rule);
+  transition: background 600ms var(--ease), padding-inline 600ms var(--ease);
+}
+.build:hover { background: rgba(243,241,235,0.035); }
+.build .t-num  { grid-area: num; }
+.build__name   { grid-area: name; }
+.build__status { grid-area: status; color: var(--ember); white-space: nowrap; }
+.build__note   { grid-area: note; }
+@media (max-width: 620px) {
+  .build { grid-template-columns: auto 1fr; grid-template-areas: "num name" ". status" ". note"; }
+  .build__status { text-align: left; }
+}
+
+/* ---------- Journal / cards grid ------------------------------ */
+
+.cards {
+  display: grid; gap: var(--s-7) var(--s-5);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+.cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 760px) { .cards--2 { grid-template-columns: 1fr; } }
+
+/* ---------- Empty state --------------------------------------- */
+
+.empty {
+  display: grid; gap: var(--s-4); justify-items: start;
+  padding: var(--s-7);
+  border: 1px dashed var(--rule);
+}
+.empty .t-meta { color: var(--fg-faint); }
+
+.press-group + .press-group { margin-top: var(--s-9); }
+
+/* ---------- Manifesto ----------------------------------------- */
+
+.manifesto { --scene-len: 5; --scene-len-m: 4.2; }
+.manifesto__stage { background: var(--ink); }
+.manifesto .statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 6vw, 4.75rem);
+  font-weight: 600; line-height: 1.02;
+  letter-spacing: var(--tr-head); text-transform: uppercase;
+  padding-inline: var(--gutter);
+}
+.manifesto .statement:last-child { color: var(--ember); }
+
+/* ---------- Marquee band -------------------------------------- */
+
+.band {
+  border-block: 1px solid var(--rule);
+  padding-block: var(--s-5);
+  overflow: hidden;
+}
+.band span {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--tr-head);
+  color: transparent;
+  -webkit-text-stroke: 1px var(--rule-strong);
+  white-space: nowrap;
+}
+.band span:nth-child(even) { color: var(--fg); -webkit-text-stroke: 0; }
+
+/* ---------- Contact ------------------------------------------- */
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: var(--s-9); align-items: start; }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: var(--s-7); } }
+
+.contact-form { display: grid; gap: var(--s-6); }
+.contact-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5); }
+@media (max-width: 620px) { .contact-form .row { grid-template-columns: 1fr; } }
+
+.routes { display: grid; gap: 0; }
+.route {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+  padding-block: var(--s-5);
+  border-top: 1px solid var(--rule);
+  transition: padding-left 500ms var(--ease);
+}
+.route:hover { padding-left: var(--s-3); }
+
+/* ---------- Article page --------------------------------------- */
+
+.article { max-width: 72ch; margin-inline: auto; }
+.article__head { display: grid; gap: var(--s-5); padding-bottom: var(--s-7); border-bottom: 1px solid var(--rule); }
+.article__meta { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: baseline; }
+.article__body { padding-top: var(--s-7); display: grid; gap: var(--s-5); }
+.article__body p {
+  font-size: clamp(1.0625rem, 1.25vw, 1.1875rem);
+  line-height: 1.72; color: var(--fg-muted);
+}
+.article__body p:first-child {
+  font-size: clamp(1.2rem, 1.9vw, 1.5rem);
+  line-height: 1.5; color: var(--fg); letter-spacing: -0.015em;
+}
+.article__foot {
+  margin-top: var(--s-9); padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; gap: var(--s-5); justify-content: space-between; align-items: center;
+}
+
+/* ---------- About page ----------------------------------------- */
+
+.chapter {
+  display: grid; grid-template-columns: 260px 1fr; gap: var(--s-7);
+  padding-block: var(--s-8);
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 900px) { .chapter { grid-template-columns: 1fr; gap: var(--s-5); } }
+.chapter__label { position: sticky; top: var(--s-9); align-self: start; }
+@media (max-width: 900px) { .chapter__label { position: static; } }
+.chapter__body { display: grid; gap: var(--s-5); }
+
+.bio-box {
+  border: 1px solid var(--rule-strong);
+  padding: var(--s-7);
+  display: grid; gap: var(--s-5);
+}
+
+/* ---------- Music page ------------------------------------------ */
+
+.story { display: grid; gap: var(--s-5); max-width: var(--max-text); }
+.story p:first-child {
+  font-size: var(--t-lead); color: var(--fg); max-width: none; line-height: 1.45;
+}
+
+/* Reduced motion: stacked beats become a legible sequence. */
+@media (prefers-reduced-motion: reduce) {
+  .freq-words { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.15em 0.5em; }
+  .freq-words span { grid-area: auto; font-size: clamp(1.4rem, 5vw, 2.6rem); }
+  .origin__lines { display: block; }
+  .origin__lines > p { max-width: none; font-size: clamp(1.6rem, 5vw, 3rem); margin-block: var(--s-4); }
+}

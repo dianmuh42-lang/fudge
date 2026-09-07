@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200" role="img" preserveAspectRatio="xMidYMid slice">
+<defs>
+<filter id="g52" x="0" y="0" width="100%" height="100%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="52" stitchTiles="stitch"/>
+  <feColorMatrix type="saturate" values="0"/>
+</filter>
+<filter id="b52" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="105.6"/>
+</filter>
+<filter id="bs52" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="28.8"/>
+</filter>
+<radialGradient id="v52" cx="50%" cy="46%" r="72%">
+  <stop offset="42%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#000" stop-opacity="0.88"/>
+</radialGradient>
+<radialGradient id="ga52" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1E4E6B" stop-opacity="0.36"/><stop offset="55%" stop-color="#1E4E6B" stop-opacity="0.101"/><stop offset="100%" stop-color="#1E4E6B" stop-opacity="0"/></radialGradient><linearGradient id="fl52" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#0A1018"/><stop offset="100%" stop-color="#000"/>
+    </linearGradient></defs><rect width="1920" height="1200" fill="url(#fl52)"/><ellipse cx="960.0" cy="528.0" rx="1190.4" ry="1190.4" fill="url(#ga52)"/><rect x="154" y="240" width="346" height="600" fill="none" stroke="#F3F1EB" stroke-opacity="0.16"/><rect x="576" y="312" width="346" height="516" fill="none" stroke="#F3F1EB" stroke-opacity="0.13"/><rect x="998" y="384" width="346" height="432" fill="none" stroke="#F3F1EB" stroke-opacity="0.10"/><rect x="1421" y="456" width="346" height="348" fill="none" stroke="#F3F1EB" stroke-opacity="0.07"/><rect width="1920" height="1200" fill="url(#v52)"/>
+<rect width="1920" height="1200" filter="url(#g52)" opacity="0.14" style="mix-blend-mode:overlay"/>
+</svg>
