@@ -46,7 +46,7 @@
   --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Fluid scale — display is deliberately oversized */
-  --t-mega:    clamp(3.4rem, 15.5vw, 15rem);
+  --t-mega:    clamp(3.4rem, 10vw, 9.5rem);
   --t-display: clamp(2.75rem, 10.5vw, 9.5rem);
   --t-h1:      clamp(2.4rem, 7.6vw, 6.75rem);
   --t-h2:      clamp(1.9rem, 5.4vw, 4.25rem);
