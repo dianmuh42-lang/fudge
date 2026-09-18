@@ -181,8 +181,50 @@ Model: `nano_banana_pro` · aspect `16:9`
 > warm, remembered. **Colour treatment** Amber highlights against blue-black
 > shadow, heavy grain, strong halation. **No identifiable faces.**
 
-### 05 — `assets/images/frequency-field.svg` → `.webp` (1920×1200, 16:10)
-Model: `nano_banana_pro` · aspect `16:9`
+### 05 — `assets/videos/frequency-film*` — **DELIVERED**
+Supplied as a finished 1920×1080 / 24fps / 5s clip generated from the reference
+photograph, replacing the abstract waveform plate originally specified below.
+It is live as the scroll-scrubbed background for Section 06, "People Are The
+Frequency," behind the six words, the paragraph and the final ember title —
+identical wiring to the hero and origin films (`data-scrub-video`, dense
+keyframes, landscape-only since this section is full-bleed `cover` at every
+width already). The fade-in that was meant to bring the media in as the words
+start turned out to be dead — `.freq-field`'s own `opacity: 0.7` and
+`[data-anim~="fade-in"]`'s `opacity: var(--q)` were equal specificity, and
+`.freq-field` loaded later, so it silently won every time; the section opened
+at a constant 70% opacity regardless of scroll. Fixed by dropping the opacity
+from `.freq-field` (it only ever needs `z-index`) so the animation actually
+drives it: 0% at the top of the section, full strength by the final title —
+a real dark-to-revealed arc now, not a flat wash from the first frame.
+
+Also found and fixed while wiring this in: the six words above it used
+overlapping `data-range` values (each word started 0.02 before the previous
+one ended), meant as a soft crossfade. `fade-through`'s envelope ramps fast at
+both ends of a range, so within that shared 0.02 both words sat around ~40%
+opacity simultaneously — a garbled double-exposure, not a dissolve. Ranges
+are now contiguous (each starts exactly where the last ends) so only one word
+is ever visible at a time; verified across a dense 37-point sweep of the full
+word sequence.
+
+> **Subject** Fudge Jarcheh, full figure, standing still in a red-lit void as
+> the camera slowly pushes in; his own shadow is cast large on the wall behind
+> him, haloed in cool blue light. **Composition** Centred, generous headroom;
+> opens wide with the figure small against the space, closes tighter with the
+> shadow-halo filling the background. **Camera angle** Eye level, dead-on.
+> **Lens feel** 35mm easing toward 50mm — a slow, continuous push, no cuts.
+> **Depth of field** Deep throughout — the shadow on the wall stays legible.
+> **Lighting** A saturated red wash rising from the floor; a cool blue halo
+> lighting the wall directly behind him, throwing the doubled shadow. **Materials**
+> Matte black overshirt and trousers, brushed felt hat, layered chain necklace.
+> **Environment** Infinite dark studio void, textured wall visible behind him.
+> **Mood** Resonant, doubled, quietly haunting — a person and their own echo.
+> **Colour treatment** Departs from the hero/origin teal-and-amber pairing for a
+> deliberate red-and-blue duality, fitting this section's theme of resonance
+> and "a version of yourself" more directly than the house palette would.
+> **Motion** One continuous unbroken push-in, constant velocity, no cuts.
+
+The original waveform-plate concept is preserved below for reference, in case
+a future refresh wants the flatter, more abstract treatment back instead.
 
 > **Subject** A field of fine interfering waveforms spreading outward from a
 > centre point. **Composition** Horizontally symmetrical, amplitude greatest at

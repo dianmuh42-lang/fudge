@@ -174,8 +174,13 @@
   white-space: nowrap;
 }
 
-/* The resonance field behind the words */
-.freq-field { z-index: 0; opacity: 0.7; }
+/* Sits behind the words, driven by its own data-anim="fade-in".
+   z-index only — opacity must NOT be set here: this class and
+   [data-anim~="fade-in"] (cinema.css) are equal specificity, and
+   components.css loads after cinema.css, so a flat opacity here
+   would permanently win the cascade and make the --q-driven fade
+   inert (it did, until this was narrowed to z-index alone). */
+.freq-field { z-index: 0; }
 
 /* ---------- Evolution ---------------------------------------- */
 

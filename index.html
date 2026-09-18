@@ -401,22 +401,39 @@
   <div class="scene__stage frequency__stage">
 
     <div class="layer layer--media">
-      <div class="stage-media freq-field" data-range="0.06 0.6" data-anim="fade-in">
-        <img src="assets/images/frequency-field.svg"
-             alt="A field of fine waveforms spreading outward across black, one traced in amber."
-             loading="lazy" decoding="async" width="1920" height="1200">
+      <!-- Scroll-scrubbed like the hero and origin films. The fade-in
+           is kept from the previous static plate: the words arrive
+           first in near-darkness, and he resolves into view as they
+           continue — landscape only, same as origin, since this
+           section is full-bleed cover at every width already. -->
+      <div class="stage-media freq-field" data-range="0.06 0.6" data-anim="fade-in" style="background-image:url(assets/images/frequency-poster.jpg)">
+        <video data-scrub-video
+               preload="none" muted playsinline disablepictureinpicture
+               poster="assets/images/frequency-poster.jpg"
+               data-poster-landscape="assets/images/frequency-poster.jpg"
+               data-film-base="assets/videos/frequency-film"
+               width="1280" height="720"
+               aria-label="Fudge Jarcheh standing in a red-lit void, the camera slowly pushing in, his own shadow cast large and haloed in blue light on the wall behind him."></video>
       </div>
     </div>
 
-    <!-- six words, arriving one at a time -->
+    <!-- six words, arriving one at a time. Ranges are contiguous, not
+         overlapping: fade-through already tapers each word's own
+         opacity to 0 at both ends of its range, so touching ranges
+         hand off cleanly on their own. The previous version gave
+         each word a 0.02 head start into the next one's range —
+         since fade-through's ramp is fast, that meant two words sat
+         at ~40% opacity over each other for a real stretch of
+         scroll, double-exposed into a garbled overlap rather than a
+         soft dissolve. -->
     <div class="layer layer--copy">
       <div class="freq-words" aria-hidden="true">
-        <span data-range="0.04 0.11" data-anim="fade-through">A song.</span>
-        <span data-range="0.09 0.16" data-anim="fade-through">A person.</span>
-        <span data-range="0.14 0.21" data-anim="fade-through">A place.</span>
-        <span data-range="0.19 0.26" data-anim="fade-through">A night.</span>
-        <span data-range="0.24 0.31" data-anim="fade-through">A memory.</span>
-        <span data-range="0.29 0.38" data-anim="fade-through">A feeling.</span>
+        <span data-range="0.040 0.097" data-anim="fade-through">A song.</span>
+        <span data-range="0.097 0.153" data-anim="fade-through">A person.</span>
+        <span data-range="0.153 0.210" data-anim="fade-through">A place.</span>
+        <span data-range="0.210 0.267" data-anim="fade-through">A night.</span>
+        <span data-range="0.267 0.323" data-anim="fade-through">A memory.</span>
+        <span data-range="0.323 0.380" data-anim="fade-through">A feeling.</span>
       </div>
     </div>
 
