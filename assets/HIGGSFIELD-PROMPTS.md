@@ -233,13 +233,40 @@ Model: `nano_banana_pro` · aspect `16:9`
 > from the right. **Mood** Cinematic title card. **Colour treatment** As asset
 > 01. **No text baked in.**
 
-### 12 — `assets/videos/origin-film.mp4` (1920×1080, ~12s, scroll-scrubbed)
-Model: `kling3_0` · aspect `16:9`
+### 12 — `assets/videos/origin-film*` — **DELIVERED**
+Supplied as a finished 1920×1080 / 24fps / 5s clip generated from the reference
+photograph. It is live as the scroll-scrubbed background for Section 05, "The
+Origin." What shipped reads better against that section's own intent — a
+withheld, dramatic reveal after three lines of text — than the original venue
+concept below, since it puts Fudge himself, not a generic space, at the centre
+of the reveal. The prompt records what it actually contains.
 
-> **Subject** The music venue of asset 04. **Motion** One continuous slow pull-
-> back from a tight frame on the light beams to a wide of the room, plus a
-> barely perceptible drift of haze. No cuts, no crowd motion, constant velocity.
-> Everything else as asset 04.
+> **Subject** Fudge Jarcheh, in the wide-brim peace-sign hat, the camera
+> cranking from an extreme macro on the hat's brim — near-abstract, a blurred
+> silhouette of him floating above it — back to a wide, symmetric, full-figure
+> frame: hat, glasses, layered necklaces, hands open at the chest. **Composition**
+> Centred throughout; opens filling the frame with texture and colour alone,
+> closes with generous negative space either side of him. **Camera angle**
+> Slightly low at the macro open, settling to eye level on the wide.
+> **Lens feel** Macro easing to 50mm. **Depth of field** Extremely shallow at
+> the open (the silhouette is pure bokeh), resolving to a clean, shallow
+> portrait depth by the close. **Lighting** Deep teal-blue key filling the
+> background; a warm amber rim on one side of the hat, face and hands.
+> **Materials** Brushed felt (macro texture is the point at the open), worn
+> leather cord, antique-gold pendant, matte cotton overshirt. **Environment**
+> Infinite dark studio void. **Mood** Withheld, then commanding — mystery
+> resolving into presence. **Colour treatment** As asset 01. **Motion** One
+> continuous unbroken pull-back, constant velocity, no cuts — this section's
+> own CSS zoom-out (`--from:1.30 --to:1.02`) doubles down on the same motion
+> rather than fighting it, and needed no adjustment against the new footage.
+
+**One crop only, unlike the hero.** This section is full-bleed `cover` at every
+width already, same as most of the site — it doesn't get the hero's dedicated
+9:16 phone crop. `engine.js`'s `pickSource` only requests a `-portrait` file
+when the element carries `data-poster-portrait` (the hero does; this doesn't),
+so a phone here correctly falls back to the `-960` landscape tier instead of
+404ing — the same generic path every other background video on the site will
+take unless it explicitly opts into its own portrait crop.
 
 ---
 

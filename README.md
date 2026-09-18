@@ -49,8 +49,8 @@ js/
 data/
   content.js                Every content model — the CMS boundary
 assets/
-  images/                   Cinematic plates + hero poster frames
-  videos/                   The scroll-scrubbed hero film (MP4 + WebM, 3 sizes)
+  images/                   Cinematic plates + hero/origin poster frames
+  videos/                   Scroll-scrubbed films — hero (3 sizes) + origin (2 sizes), MP4 + WebM
   icons/                    Mark, favicon, arrow
   fonts/                    woff2 subsets, latin + latin-ext
   HIGGSFIELD-PROMPTS.md     Full generation spec for every visual
@@ -161,6 +161,24 @@ pinned scenes collapse to normal flow, the horizontal rail becomes a vertical
 list, stacked beats become legible sequences, and the homepage shortens from
 ~26,000px to ~16,000px with every piece of content visible.
 
+### Other background videos
+
+The same `data-scrub-video` mechanism now also drives Section 05, "The
+Origin" — a real film (macro on the hat, cranking back to the full figure)
+replacing what used to be a static plate under a CSS zoom. Unlike the hero,
+it ships **one crop only**: this section is full-bleed `cover` at every width
+already, same as most of the site, so it doesn't need the hero's dedicated
+9:16 phone crop — a phone here just gets the smaller `-960` landscape tier.
+
+That asymmetry is exactly what `pickSource` has to get right: it only
+requests a `-portrait` file when the element itself carries
+`data-poster-portrait` (an explicit per-element opt-in, not a blanket
+viewport check). Without that guard, any background video added without a
+portrait crop — which is most of them — would 404 the moment a phone's
+width crossed the same breakpoint the hero uses. Add a new scrubbed video the
+same way: `data-film-base` plus tiered landscape files is enough on its own;
+`data-poster-portrait` is only needed if that section earns its own crop too.
+
 ---
 
 ## Content architecture
@@ -229,9 +247,11 @@ tap targets at 44px on touch pointers / 24px on fine pointers (WCAG 2.2 SC
 2.5.8).
 
 Plus interaction tests for the menu focus trap and Escape, contact validation →
-mailto → reset, skip link and focus rings, reduced motion, and the hero film:
-portrait/landscape crop selection by viewport, size tier, format fallback,
-decode, correct poster (and background) on both crops and on rotate, monotonic
-scrub across the full 5 seconds on every tier, the true first frame painting
-correctly at rest (not the poster) on load, and zero bytes spent under
-Save-Data or a viewport too short to scrub.
+mailto → reset, skip link and focus rings, reduced motion, and both scrubbed
+films: portrait/landscape crop selection by viewport, size tier, format
+fallback, decode, correct poster (and background) on both crops and on
+rotate, monotonic scrub across the full 5 seconds on every tier, the true
+first frame painting correctly at rest (not the poster) on load, zero bytes
+spent under Save-Data or a viewport too short to scrub, and — for Section 05,
+which has no portrait crop of its own — zero 404s and a correct landscape-tier
+fallback on every phone width instead.

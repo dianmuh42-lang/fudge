@@ -470,7 +470,13 @@
     if (!base) return v.getAttribute('data-src') || '';
     var mp4 = v.canPlayType('video/mp4; codecs="avc1.4d401f"');
     var ext = (mp4 === 'probably' || mp4 === 'maybe') ? '.mp4' : '.webm';
-    if (portrait) return base + '-portrait' + ext;
+    /* Only request the -portrait file when this element actually
+       ships one (data-poster-portrait is the same opt-in signal
+       resolvePoster uses). Most scrubbed videos on the site are a
+       single landscape crop shown full-bleed at every width via
+       object-fit:cover — without this check, any of those would
+       404 on a phone the moment isPortraitViewport() is true. */
+    if (portrait && v.hasAttribute('data-poster-portrait')) return base + '-portrait' + ext;
     var w = window.innerWidth;
     return base + (w <= 1280 ? '-960' : '') + ext;
   }

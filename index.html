@@ -348,10 +348,20 @@
   <div class="scene__stage letterbox" style="background:#000">
 
     <div class="layer layer--media">
-      <div class="stage-media" data-range="0.30 1" data-anim="zoom-out" style="--from:1.30;--to:1.02">
-        <img src="assets/images/music-stage.svg"
-             alt="Two hard amber stage beams cutting down through darkness onto a crowd in silhouette."
-             loading="lazy" decoding="async" width="1920" height="1200">
+      <!-- Scroll-scrubbed like the hero: the film's own macro-to-wide
+           pull-back (a close detail on the hat, opening out to the
+           full figure) now carries the reveal that used to be a CSS
+           zoom over a static plate. Landscape only — this section is
+           full-bleed cover at every width, same as most of the site;
+           it doesn't need the hero's dedicated 9:16 crop. -->
+      <div class="stage-media" data-range="0.30 1" data-anim="zoom-out" style="--from:1.30;--to:1.02;background-image:url(assets/images/origin-poster.jpg)">
+        <video data-scrub-video
+               preload="none" muted playsinline disablepictureinpicture
+               poster="assets/images/origin-poster.jpg"
+               data-poster-landscape="assets/images/origin-poster.jpg"
+               data-film-base="assets/videos/origin-film"
+               width="1280" height="720"
+               aria-label="Fudge Jarcheh in a wide-brim peace-sign hat, the camera pulling back from a close detail on the hat brim to reveal him standing full-figure, hands open, lit deep blue with a warm amber rim."></video>
       </div>
       <div class="stage-media" aria-hidden="true" data-range="0.28 0.52" data-anim="fade-in" style="background:linear-gradient(to top,rgba(0,0,0,.85),transparent 60%)"></div>
     </div>

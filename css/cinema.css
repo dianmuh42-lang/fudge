@@ -204,6 +204,13 @@
 .stage-media {
   position: absolute; inset: -6%;      /* bleed so parallax never shows an edge */
   width: 112%; height: 112%;
+  background-color: var(--ink);
+  /* No-op unless a background-image is set (the scrub-video poster
+     trick — see engine.js resolvePoster): a frame painted here shows
+     through before the video's first byte arrives, and stays if it
+     never loads at all. */
+  background-size: cover;
+  background-position: 50% 50%;
 }
 .stage-media > img,
 .stage-media > video,
