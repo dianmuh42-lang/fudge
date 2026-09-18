@@ -591,7 +591,13 @@ button { cursor: pointer; }
 
 .pagehead {
   position: relative;
-  min-height: clamp(58vh, 74svh, 90vh);
+  /* Full-screen, matching the homepage hero's .scene__stage: an
+     svh floor that works before JS runs, then the stable
+     JS-measured unit (engine.js sets --vh) so mobile browser
+     chrome showing/hiding doesn't resize the section underneath
+     the visitor mid-scroll. */
+  min-height: 100svh;
+  min-height: calc(100 * var(--vh));
   display: flex; align-items: flex-end;
   padding-bottom: var(--s-8);
   overflow: hidden;
