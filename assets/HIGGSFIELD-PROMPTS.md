@@ -60,20 +60,27 @@ Model: `soul_2` (quality `2k`) · reference image required · aspect `3:4`
 > Desaturated, warm highlights against cool shadows, deep true blacks, fine 35mm
 > grain, faint halation on the rim light.
 
-### 02 — `assets/images/editorial-stage.svg` → `editorial-stage.webp` (1600×2000, 4:5)
-Model: `soul_2` (quality `2k`) · reference image required · aspect `3:4`
+### 02 — `assets/images/editorial-stage.webp` — **DELIVERED**
+Supplied as a finished 1500×2000 photograph generated from the reference
+photograph. It is live as the editorial portrait in Section 02, "Who is Fudge
+Jarcheh?" What shipped reads as a direct sibling of the hero and origin films
+— same subject, same lighting formula, same hands-open gesture — rather than
+the cooler, quieter three-quarter pose originally speculated below; that
+consistency across the site's three identity-bearing assets is a stronger
+result than the original brief, so it stands as delivered.
 
-> **Subject** Fudge Jarcheh, three-quarter length, turned 30° from camera, gaze
-> off-frame left, one hand resting near the chest. **Composition** Subject on the
-> right third, a hard-edged rectangle of window light falling across the empty
-> left third. **Camera angle** Slightly below eye level. **Lens feel** 50mm,
-> honest perspective. **Depth of field** f/2.8, shallow but readable.
-> **Lighting** Single large soft source high and camera-left producing a defined
-> shadow edge; cool blue bounce filling the shadow side; no rim. **Materials**
-> Matte fabric, skin with visible texture, plaster wall. **Environment** Bare
-> studio corner, one wall, no furniture. **Mood** Editorial, considered,
-> magazine-profile rather than corporate. **Colour treatment** Cooler and flatter
-> than the hero, slightly lifted blacks, restrained contrast, fine grain.
+> **Subject** Fudge Jarcheh, three-quarter length, facing camera, in the
+> wide-brim peace-sign hat and round glasses, hands open at chest height.
+> **Composition** Centred, generous negative space above and around him.
+> **Camera angle** Eye level. **Lens feel** 85mm portrait compression.
+> **Depth of field** Shallow, background resolved to soft dark blue.
+> **Lighting** Deep blue ambient filling the background and shadow side; a
+> warm amber rim raking the opposite side of the face, hat and hands.
+> **Materials** Matte cotton overshirt, brushed felt hat, layered chain
+> necklaces, worn leather cord pendant. **Environment** Dark studio, no
+> visible walls or props. **Mood** Composed, direct, quietly confident.
+> **Colour treatment** As asset 01 (matching the hero and origin film) —
+> desaturated, warm highlights against cool shadows, fine grain.
 
 ### 07 — `assets/videos/hero-film*` — **DELIVERED**
 Supplied as a finished 1920×1080 / 24fps / 5s clip generated from the reference
