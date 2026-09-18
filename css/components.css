@@ -375,70 +375,39 @@
 
 /* ============================================================
    HERO — MOBILE COMPOSITION
-   A 16:9 film cannot go full-bleed behind a portrait viewport
-   without cropping to the middle 26% of the frame, which cuts
-   both of his hands out of the shot. So on small screens the
-   film becomes a cinematic band the headline overlaps, and the
-   copy sits beneath it on black — still a full-viewport hero,
-   composed for the screen it is actually on.
+   The film ships two crops: a 16:9 master for tablet/desktop and a
+   true 9:16 centre crop for phones (engine.js swaps source, poster
+   and this background together by viewport). Because the phone
+   asset is actually vertical, the hero goes full-bleed here too —
+   same structure as desktop, just re-composed for it: the subject
+   now fills the entire frame width, so there is no empty margin
+   left to set text into. Copy anchors to the bottom instead of the
+   centre, over a scrim heavy enough to hold type against a subject
+   who is immediately behind it rather than beside it.
    ============================================================ */
 
 @media (max-width: 760px) {
-  .hero__stage {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 100%;
-    /* the base stage centres its items; a column hero must stretch
-       them, or an absolutely-filled media layer collapses to 0 wide */
-    place-items: start stretch;
-    padding-top: clamp(4.5rem, 12svh, 7rem);
-  }
-
-  .hero .layer--media {
-    position: relative; inset: auto;
-    grid-row: 1;
-    display: block;
-    height: clamp(220px, 34svh, 340px);
-    overflow: hidden;
-  }
-  .hero .layer--copy {
-    position: relative; inset: auto;
-    grid-row: 2;
-    display: block;
-    width: 100%;
-    align-self: end;
-    padding-bottom: clamp(3.5rem, 9svh, 5.5rem);
-  }
-
-  /* keep the parallax over-scan, just inside the band */
-  .hero__film { inset: -4%; width: 108%; height: 108%; }
+  .hero__copy { align-content: end; gap: var(--s-4); padding-bottom: clamp(3rem, 8svh, 5rem); }
 
   .hero__scrim {
     background:
-      linear-gradient(to top, var(--ink) 0%, rgba(0,0,0,.35) 34%, transparent 68%),
-      linear-gradient(to bottom, rgba(0,0,0,.55) 0%, transparent 40%);
+      linear-gradient(to top, var(--ink) 0%, rgba(0,0,0,.82) 24%, rgba(0,0,0,.3) 50%, transparent 70%),
+      linear-gradient(to bottom, rgba(0,0,0,.5) 0%, transparent 30%);
   }
 
-  /* the headline rides up over the foot of the film */
-  .hero__copy { gap: var(--s-4); }
-  .hero__name { margin-top: calc(var(--s-6) * -1); }
   .hero__eyebrow { display: none; }
   .hero__actions { margin-top: var(--s-3); }
 
-  /* The copy fills the lower half on a phone; a scroll cue here would
-     land on top of the CTAs, and a phone needs no invitation to scroll. */
+  /* Copy sits in the bottom third; a scroll cue there would collide
+     with the CTAs, and a phone needs no invitation to scroll anyway. */
   .hero .cue { display: none; }
 }
 
-/* Small phones (SE-class, <=680px tall): the band and the full copy
-   cannot both have their preferred size in one viewport, so the film
-   gives up height first and the type tightens. */
+/* Small phones (SE-class, <=680px tall): vertical space is scarcer
+   still, so type tightens and the secondary line drops. */
 @media (max-width: 760px) and (max-height: 680px) {
-  .hero__stage { padding-top: clamp(3.5rem, 9svh, 5rem); }
-  .hero .layer--media { height: clamp(150px, 24svh, 210px); }
-  .hero .layer--copy { padding-bottom: clamp(2rem, 5svh, 3rem); }
-  .hero__copy { gap: var(--s-3); }
-  .hero__name { font-size: clamp(2.6rem, 13vw, 4rem); margin-top: calc(var(--s-5) * -1); }
+  .hero__copy { gap: var(--s-3); padding-bottom: clamp(2rem, 6svh, 3rem); }
+  .hero__name { font-size: clamp(2.6rem, 13vw, 4rem); }
   .hero__sub { gap: var(--s-2); }
   .hero__sub .t-body { display: none; }   /* the lead line carries it */
   .hero__actions { margin-top: var(--s-2); }

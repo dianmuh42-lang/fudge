@@ -14,7 +14,7 @@
 <meta property="og:description" content="Entrepreneur. Artist. Creator. Technologist. Building at the intersection of business, technology, music and creativity.">
 <meta property="og:url" content="https://fudgejarcheh.com/">
 <meta property="og:image" content="https://fudgejarcheh.com/assets/images/hero-poster.jpg">
-<meta property="og:image:alt" content="Fudge Jarcheh lit in deep blue with a warm amber rim light, hands open.">
+<meta property="og:image:alt" content="Fudge Jarcheh in a wide-brim peace-sign hat and round sunglasses, lit deep blue with a warm amber rim.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Fudge Jarcheh — Entrepren-Artist">
 <meta name="twitter:description" content="Entrepreneur. Artist. Creator. Technologist. People are the frequency.">
@@ -24,7 +24,8 @@
 <link rel="apple-touch-icon" href="assets/icons/mark.svg">
 <link rel="manifest" href="site.webmanifest">
 
-<link rel="preload" as="image" href="assets/images/hero-poster.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/images/hero-poster.jpg" media="(min-width: 761px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/images/hero-poster-portrait.jpg" media="(max-width: 760px)" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-latin.woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
@@ -108,18 +109,22 @@
 
     <div class="layer layer--media">
       <!-- The scroll IS the transport: engine.js maps scene progress onto
-           currentTime. Sources are chosen by viewport in initVideos() so a
-           phone never pulls the desktop master; the poster is also painted
-           as a background so a frame is on screen before the first byte of
+           currentTime. The film ships two crops — a 16:9 master for
+           tablet/desktop and a true 9:16 centre crop for phones — and
+           engine.js resolves source, poster and this background-image
+           together by viewport, so a phone never pulls the landscape
+           master. The poster is on screen before the first byte of
            video arrives, and stays there if video never loads at all. -->
       <div class="hero__film stage-media depth-3" data-range="0 1" data-anim="zoom-in"
            style="--from:1.02;--to:1.16;background-image:url(assets/images/hero-poster.jpg)">
         <video data-scrub-video
                preload="none" muted playsinline disablepictureinpicture
                poster="assets/images/hero-poster.jpg"
+               data-poster-landscape="assets/images/hero-poster.jpg"
+               data-poster-portrait="assets/images/hero-poster-portrait.jpg"
                data-film-base="assets/videos/hero-film"
                width="1280" height="720"
-               aria-label="Fudge Jarcheh in a dark studio, lit deep blue with a warm amber rim, hands open as the camera slowly pulls back."></video>
+               aria-label="Fudge Jarcheh in a wide-brim peace-sign hat and round sunglasses, lit deep blue with a warm amber rim, in a dark studio."></video>
       </div>
       <div class="hero__scrim" aria-hidden="true" data-range="0 1" data-anim="fade-out"></div>
     </div>

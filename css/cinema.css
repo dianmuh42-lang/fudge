@@ -276,10 +276,26 @@
     position: relative; height: auto; min-height: auto;
     padding-block: var(--section-y);
     display: block; overflow: visible;
+    /* .scene__stage's base rule sets place-items:center for its grid
+       mode; that isn't cleared just because display switches to
+       block. Chromium's block-alignment feature still honours
+       justify-items:center there, which shrinks any block child
+       whose only content is position:absolute (nothing in normal
+       flow to size against) to zero width. */
+    justify-items: normal; align-items: normal;
   }
   .layer { position: relative; inset: auto; display: block; }
   .layer--media { margin-bottom: var(--s-6); }
   .stage-media { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+
+  /* The hero's phone asset is a true 9:16 crop, not a 16:9 frame — the
+     generic aspect-ratio above would force-crop it back toward
+     landscape and lose most of the framing this poster was chosen
+     for (engine.js swaps to the portrait poster at this breakpoint;
+     see resolvePoster). */
+  @media (max-width: 760px) {
+    .hero .stage-media { aspect-ratio: 9 / 16; }
+  }
 
   [data-anim], [data-parallax] { transform: none !important; filter: none !important; }
   [data-anim~="fade-in"], [data-anim~="fade-out"], [data-anim~="fade-through"] { opacity: 1 !important; }
@@ -344,6 +360,11 @@
     overflow: visible;
     display: block;
     padding-block: var(--s-8);
+    /* see the matching comment in the reduced-motion block above:
+       without this reset, a block child with only absolutely-
+       positioned content (the hero's video layer) collapses to
+       zero width under Chromium's block-alignment justify-items. */
+    justify-items: normal; align-items: normal;
   }
   .layer { position: relative; inset: auto; display: block; }
   .layer--media { margin-bottom: var(--s-6); }

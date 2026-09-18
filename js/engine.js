@@ -21,6 +21,10 @@
 
   var root = document.documentElement;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  /* Matches cinema.css's own short-viewport breakpoint, where pinned
+     scenes unpin and there is no scroll track left to scrub against.
+     Fetching a film that can't be scrubbed there would just be waste. */
+  var shortLandscape = window.matchMedia('(max-height: 520px) and (orientation: landscape)');
 
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
   var lerp = function (a, b, t) { return a + (b - a) * t; };
@@ -220,7 +224,7 @@
       }
 
       var vid = el.querySelector('[data-scrub-video]');
-      if (vid) videos.push({ scene: el, el: vid });
+      if (vid) videos.push({ scene: el, el: vid, primed: false });
 
       scenes.push({
         el: el,
@@ -350,8 +354,20 @@
       if (!media.paused) media.pause();
       var target = scene.p * media.duration;
       var next = lerp(media.currentTime, target, 0.22);
-      if (Math.abs(next - media.currentTime) > 0.012) {
-        try { media.currentTime = next; } catch (err) { /* seek not ready */ }
+      /* A video that has never been played or explicitly seeked keeps
+         showing its poster on screen even once currentTime reads back
+         correctly — some engines only repaint on a genuine 'seeked'
+         event. At rest on load, scene.p is 0 and the video's own
+         currentTime already defaults to 0, so this lerp is a no-op
+         and the assignment below would never fire, leaving the
+         poster showing indefinitely at the top of the page instead
+         of the film's true first frame. Force one real seek — even a
+         0-to-0 one — the first time each video is ready. */
+      if (!rec.primed || Math.abs(next - media.currentTime) > 0.012) {
+        try {
+          media.currentTime = next;
+          rec.primed = true;
+        } catch (err) { /* seek not ready yet — retry next frame */ }
         busy = true;
       }
     }
@@ -411,20 +427,52 @@
      VIDEO HYGIENE — muted, never autoplay with sound, pause offscreen
      ============================================================ */
 
+  /* A phone-width viewport gets the true 9:16 crop rather than a
+     shrunk 16:9 master. 760px matches the breakpoint the mobile CSS
+     already keys off, so a rotated phone (innerWidth > 760 in
+     landscape) correctly falls through to a landscape tier below —
+     no separate orientation check needed. */
+  function isPortraitViewport() {
+    return window.innerWidth <= 760;
+  }
+
+  /* The poster (and the background-image painted behind the video so
+     a frame is on screen before any byte of it arrives) has to match
+     whichever crop is about to load. This is cheap — a few KB of JPEG
+     — so unlike the film itself it is safe to re-resolve on resize. */
+  function resolvePoster(v) {
+    var portrait = isPortraitViewport();
+    var portraitPoster = v.getAttribute('data-poster-portrait');
+    var poster = (portrait && portraitPoster) ? portraitPoster : v.getAttribute('data-poster-landscape');
+    if (poster && v.getAttribute('poster') !== poster) {
+      v.setAttribute('poster', poster);
+      var stage = v.closest('.stage-media');
+      if (stage) stage.style.backgroundImage = 'url(' + poster + ')';
+    }
+    return portrait;
+  }
+
+  function refreshPosters() {
+    document.querySelectorAll('video[data-scrub-video]').forEach(resolvePoster);
+  }
+
   /* Resolve the film for the viewport actually in front of us, once.
      Never re-pick on resize — that restarts the download and throws away
      the buffer for no visual gain.
 
-     Size tier keeps a phone off the desktop master. Format prefers H.264
-     (smaller here at the keyframe density scrubbing needs, and supported
-     everywhere) and falls back to VP9 for any engine without it. */
-  function pickSource(v) {
+     Crop is portrait vs. landscape (see isPortraitViewport), size tier
+     within landscape keeps a tablet off the desktop master. Format
+     prefers H.264 (smaller here at the keyframe density scrubbing
+     needs, and supported everywhere) and falls back to VP9 for any
+     engine without it. */
+  function pickSource(v, portrait) {
     var base = v.getAttribute('data-film-base');
     if (!base) return v.getAttribute('data-src') || '';
-    var w = window.innerWidth;
-    var tier = w <= 760 ? '-720' : w <= 1280 ? '-960' : '';
     var mp4 = v.canPlayType('video/mp4; codecs="avc1.4d401f"');
-    return base + tier + (mp4 === 'probably' || mp4 === 'maybe' ? '.mp4' : '.webm');
+    var ext = (mp4 === 'probably' || mp4 === 'maybe') ? '.mp4' : '.webm';
+    if (portrait) return base + '-portrait' + ext;
+    var w = window.innerWidth;
+    return base + (w <= 1280 ? '-960' : '') + ext;
   }
 
   function loadScrubVideos() {
@@ -432,20 +480,33 @@
     var frugal = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
 
     document.querySelectorAll('video[data-scrub-video]').forEach(function (v) {
-      /* Reduced motion or Save-Data: the poster is the hero. No megabytes
-         are spent on a film the visitor has asked not to be shown. */
-      if (reduced.matches || frugal) {
+      var portrait = resolvePoster(v);
+
+      /* Reduced motion, Save-Data, or a viewport short enough that
+         cinema.css has already unpinned the scene (no track left to
+         scrub against): the poster is the hero. No megabytes are
+         spent on a film the visitor won't see scrubbed. */
+      if (reduced.matches || frugal || shortLandscape.matches) {
         v.setAttribute('data-film', 'poster-only');
         return;
       }
       if (v.dataset.filmLoaded === '1') return;
-      var src = pickSource(v);
+      var src = pickSource(v, portrait);
       if (!src) return;
       v.dataset.filmLoaded = '1';
       v.preload = 'auto';
       v.src = src;
       v.addEventListener('loadeddata', function () {
         v.setAttribute('data-film', 'ready');
+        /* A video that has never played keeps showing its poster on
+           screen even once decoded — assigning currentTime alone
+           doesn't repaint it, and at rest on load the target seek is
+           0-to-0, a genuine no-op the browser has nothing to react
+           to. Starting playback for a beat, muted, is what actually
+           swaps the visible frame away from the poster; pausing
+           immediately after keeps it static for the scrub to drive. */
+        var kick0 = v.play();
+        if (kick0 && kick0.then) kick0.then(function () { v.pause(); }).catch(function () {});
         kick();
       }, { once: true });
       v.addEventListener('error', function () {
@@ -532,6 +593,14 @@
     initChapters();
     initVideos();
     initCursor();
+
+    /* Cheap and orientation-agnostic to the heavier scene machinery
+       below, so this runs regardless of reduced motion: rotating a
+       phone (or resizing past the 760px breakpoint) must keep the
+       poster matched to whichever crop is showing, even when that
+       poster is the only frame ever shown. */
+    window.addEventListener('resize', refreshPosters, { passive: true });
+    window.addEventListener('orientationchange', refreshPosters);
 
     if (reduced.matches) {
       /* static, complete, readable — no scroll maths at all */

@@ -75,38 +75,61 @@ Model: `soul_2` (quality `2k`) · reference image required · aspect `3:4`
 > magazine-profile rather than corporate. **Colour treatment** Cooler and flatter
 > than the hero, slightly lifted blacks, restrained contrast, fine grain.
 
-### 07 — `assets/videos/hero-film.mp4` — **DELIVERED**
-Supplied as a finished 1280×720 / 24fps / 10s clip generated from the reference
-photograph. It is live as the scroll-scrubbed hero. The prompt below records
-what it contains, for regenerating or extending it.
+### 07 — `assets/videos/hero-film*` — **DELIVERED**
+Supplied as a finished 1920×1080 / 24fps / 5s clip generated from the reference
+photograph. It is live as the scroll-scrubbed hero, on both desktop and mobile.
+The prompt below records what it contains, for regenerating or extending it.
 
-> **Subject** Fudge Jarcheh standing still in a dark void as the camera moves
-> around and toward him. **Composition** Opens wide with the figure small and
-> centred; closes on a chest-up frame. **Camera angle** Begins slightly high,
-> settles to eye level. **Lens feel** 35mm easing to 85mm — a slow compressing
-> push. **Depth of field** Progressively shallower as the push lands.
-> **Lighting** Teal-blue ambient; a warm amber rim that travels across the face
-> as the camera arcs. **Materials** As asset 01. **Environment** Infinite dark
-> studio void. **Mood** Patient, weightless, inevitable. **Colour treatment**
-> Matching asset 01. **Motion** One continuous unbroken take. Slow dolly-in with
-> a gentle 15° arc to camera-left. No cuts, no whip pans, no handheld shake, no
-> subject movement beyond breathing. Constant velocity so it scrubs cleanly at
-> any scroll speed.
+> **Subject** Fudge Jarcheh, chest-up, in a wide-brim hat with an embroidered
+> peace sign and round sunglasses, gesturing with one hand as the camera cranes
+> from his chest up to a close final frame on his face. **Composition** Opens
+> tight on a pendant at his chest, identity withheld; closes on a direct-gaze
+> close-up with the hat's peace sign fully in frame. **Camera angle** Begins
+> level with the chest, tilts up to eye level on the face. **Lens feel** 50mm,
+> a slow, continuous push. **Depth of field** Shallow throughout, background
+> resolved to soft dark blue. **Lighting** Deep teal-blue key filling the
+> background falloff; a warm amber rim raking one side of the face and hand.
+> **Materials** Matte cotton overshirt, brushed felt hat, worn leather cord
+> pendant. **Environment** Infinite dark studio void. **Mood** Composed,
+> unhurried, quietly commanding. **Colour treatment** Desaturated with warm
+> highlights against cool shadows, deep true blacks, fine grain. **Motion** One
+> continuous unbroken take, constant velocity. No cuts. Scrubs cleanly at any
+> scroll speed and reverses just as cleanly.
 
-**Encoding actually used** — the delivered source carried only 4 keyframes
-across 10 seconds, which stutters under a seek-per-frame scrub load:
+**Two crops ship, not one file scaled down.** The full 1920×1080 frame serves
+tablet and desktop; phones get a genuine, centred **9:16 crop** —
+`crop=608:1080:656:0` (`656 = (1920-608)/2`, an exact 9:16 width from the
+1080 height) — rather than a shrunk landscape video cropped again by CSS.
+`engine.js` picks the crop by viewport width (portrait below 760px, matching
+the mobile CSS breakpoint), independent of the size-tier and format choice
+below.
+
+**Encoding actually used** — the delivered source was 10-bit HEVC with a
+single keyframe across the whole clip, which neither decodes broadly in
+browsers nor scrubs cleanly:
 
 ```
-ffmpeg -i src.mp4 -an -c:v libx264 -profile:v high -pix_fmt yuv420p \
+ffmpeg -i src.mp4 -an -vf scale=1280:720:flags=lanczos \
+  -c:v libx264 -profile:v high -pix_fmt yuv420p \
   -g 4 -keyint_min 4 -sc_threshold 0 -bf 0 \
-  -crf 27 -preset slow -movflags +faststart hero-film.mp4
+  -crf 22 -preset slow -movflags +faststart hero-film.mp4
+
+ffmpeg -i src.mp4 -an -vf crop=608:1080:656:0 \
+  -c:v libx264 -profile:v high -pix_fmt yuv420p \
+  -g 4 -keyint_min 4 -sc_threshold 0 -bf 0 \
+  -crf 22 -preset slow -movflags +faststart hero-film-portrait.mp4
 ```
 
-`-g 4` gives 60 keyframes (one per 4 frames), `-bf 0` drops B-frames so seeks
-never depend on a later frame, `-an` strips audio. Repeat at `scale=960:-2`
-(crf 28) and `scale=720:-2` (crf 30), then the same three as VP9/WebM with
-`-auto-alt-ref 0 -lag-in-frames 0`. Poster frames come from frame 0 at each
-width. `engine.js` resolves tier and format at boot.
+`-pix_fmt yuv420p` drops it to broadly-supported 8-bit. `-g 4` gives ~30
+keyframes over the 5s clip (one per 4 frames), `-bf 0` drops B-frames so seeks
+never depend on a later frame, `-an` strips audio. Repeat the landscape master
+at `scale=960:540` (crf 24), and all three as VP9/WebM with `-auto-alt-ref 0
+-lag-in-frames 0`. Poster frames come from a single well-composed timestamp
+(here, t=4.3s — the full reveal) rather than literal frame 0, so the static
+fallback (reduced motion, Save-Data, a short landscape viewport) always shows
+identity clearly rather than the withheld opening beat. `engine.js` resolves
+crop, tier and format at boot; the poster (and its background-image copy) is
+cheap enough to re-resolve on rotate even though the film itself never re-picks.
 
 ### 09 — `assets/images/about-portrait.webp` (1400×1750, 4:5)
 Model: `soul_2` · reference image required · aspect `3:4`
@@ -228,13 +251,34 @@ placeholder format. To swap in a generated asset:
 1. Save it at the same path with a `.webp` extension.
 2. Update the `src` (homepage sections are in `index.html`; card and grid
    imagery is in `data/content.js`).
-3. For video, replace the `<img>` inside `.stage-media` with:
+3. For a plain (non-scrubbed) background video, replace the `<img>` inside
+   `.stage-media` with:
 
 ```html
 <video data-scrub-video muted playsinline preload="auto"
-       poster="assets/images/hero-stage.webp"
-       src="assets/videos/hero-film.mp4"></video>
+       poster="assets/images/some-poster.webp"
+       data-src="assets/videos/some-film.mp4"></video>
 ```
 
 The engine detects `data-scrub-video` inside a `[data-scene]` and drives
-`currentTime` from scene progress — no JavaScript changes needed.
+`currentTime` from scene progress — no JavaScript changes needed. `data-src` is
+read once at boot by the generic fallback path in `pickSource()`.
+
+**The hero specifically** is wired for size tiers, format fallback and a
+portrait/landscape crop swap — see `js/engine.js`'s `pickSource`,
+`resolvePoster` and `isPortraitViewport`. To replace the hero film, keep the
+same attribute shape (`index.html`, inside `#hero`):
+
+```html
+<video data-scrub-video muted playsinline preload="none"
+       poster="assets/images/hero-poster.jpg"
+       data-poster-landscape="assets/images/hero-poster.jpg"
+       data-poster-portrait="assets/images/hero-poster-portrait.jpg"
+       data-film-base="assets/videos/hero-film"></video>
+```
+
+`data-film-base` is a prefix, not a full path — the engine appends
+`-portrait` (viewport ≤760px), `-960` (≤1280px, landscape only), or nothing
+(full landscape master), then `.mp4` or `.webm` depending on `canPlayType`. So
+replacing the hero means producing all six files at that base name — see the
+encoding commands under asset 07 above — not just one.

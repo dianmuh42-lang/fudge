@@ -75,29 +75,48 @@ animation stays on the compositor and never touches layout.
 
 ### The hero film
 
-The hero is a real 10-second film of Fudge, and **scroll is its transport** —
+The hero is a real 5-second film of Fudge, and **scroll is its transport** —
 `engine.js` maps scene progress onto `video.currentTime`. It never plays on its
-own; scrolling back runs it backwards.
+own; scrolling back runs it backwards. The take opens withholding his face (a
+tight shot of the pendant), and by the end of the scroll pulls back to a full
+reveal — hat, sunglasses, direct gaze.
 
-The source arrived with 4 keyframes across 10 seconds, which stutters badly
-under a seek-per-frame load. It is re-encoded to **60 keyframes (one every 4
-frames), with B-frames removed and audio stripped**, so any seek lands on or
-beside a keyframe.
+The source arrived as 10-bit HEVC with 1 keyframe across 5 seconds, which
+neither decodes broadly in browsers nor scrubs cleanly. It is re-encoded to
+8-bit H.264/VP9 at **60 keyframes (one every 4 frames), with B-frames removed
+and audio stripped**, so any seek lands on or beside a keyframe.
 
-Three size tiers and two formats ship. `engine.js` resolves one file, once, at
-boot: the tier from viewport width, the format from `canPlayType` — H.264 where
-it exists (smaller at this keyframe density), VP9/WebM otherwise. It never
-re-picks on resize, which would restart the download and discard the buffer.
+**It ships as two crops, not one file scaled down.** Tablet and desktop get the
+full 16:9 frame; phones get a true, centred 9:16 crop (608×1080 from the
+1920×1080 source — exact 9:16, not letterboxed) rather than a shrunk landscape
+video cropped again by CSS. `engine.js` resolves crop, tier and format once at
+boot: portrait below 760px viewport width (the same breakpoint the mobile CSS
+already keys off), the size tier from width within landscape, the format from
+`canPlayType` — H.264 where it exists (smaller at this keyframe density), VP9
+otherwise. It never re-picks on resize, which would restart the download and
+discard the buffer — only the (cheap, few-KB) poster re-resolves on rotate.
 
-| | 1280×720 | 960×540 | 720×404 |
+| | 1280×720 | 960×540 | 608×1080 (portrait) |
 |---|---|---|---|
-| MP4 (H.264) | 2.02 MB | 1.21 MB | 0.71 MB |
-| WebM (VP9) | 2.16 MB | 1.42 MB | 0.95 MB |
+| MP4 (H.264) | 909 KB | 485 KB | 860 KB |
+| WebM (VP9) | 650 KB | 432 KB | 635 KB |
 
 Two cases spend nothing at all: `prefers-reduced-motion` and Save-Data (or a 2G
-connection) leave the poster frame in place and never request the film. The
-poster is also painted as a background on the film's container, so a frame is on
-screen before the first byte arrives and stays there if video never loads.
+connection) leave the poster frame in place and never request the film. A third
+— a viewport short enough that the section below has already unpinned the scene
+(no track left to scrub against) — does the same, since fetching a film that
+can't be scrubbed there would just be waste. The poster (landscape or portrait,
+matching whichever crop is active) is also painted as a background on the
+film's container, so a frame is on screen before the first byte arrives and
+stays there if video never loads.
+
+A video that has never played still shows its `poster` attribute on screen even
+after a successful programmatic seek — some engines only repaint once playback
+has genuinely started. At rest on load the first seek target is 0 (the video's
+own resting value), so the usual smoothing skips it as a no-op and the poster
+would otherwise sit there indefinitely. `engine.js` starts playback for a beat,
+muted, the moment the film is decoded, then immediately pauses — enough to
+force the real first frame on screen before scroll takes over.
 
 Authoring a beat is declarative:
 
@@ -119,24 +138,28 @@ Available on `data-anim`: `zoom-in` `zoom-out` `rise` `sink` `enter` `pan-x`
 **Performance.** One `requestAnimationFrame` loop that stops when nothing is
 moving. Scenes and parallax targets are gated by `IntersectionObserver`, so
 off-screen work costs nothing. Reads are batched before writes each frame.
-`will-change` is applied only while an element is in play. First load is 16
-requests and **zero external connections** — about 1.0 MB on a phone and 2.2 MB
-on a desktop, nearly all of it the film.
+`will-change` is applied only while an element is in play. First load is 16–18
+requests and **zero external connections** — well under 1 MB on both a phone
+and a desktop, nearly all of it the film.
 
-**Mobile hero.** A 16:9 film cannot go full-bleed behind a portrait phone
-without cropping to the middle ~26% of the frame, which cuts both of his hands
-out of the shot. So below 760px the film becomes a cinematic band the headline
-overlaps, with the copy beneath it — still a full-viewport hero, composed for
-the screen it is actually on. Below 680px tall the band gives up height first
-and the type tightens, so an SE-class phone still shows the name, the lead line
-and both CTAs without clipping. Below 520px tall in landscape the scenes unpin
-entirely and the film becomes an ordinary, complete, scrollable page.
+**Mobile hero.** Because the phone asset is a genuine 9:16 crop rather than a
+16:9 frame squeezed into a portrait viewport, the hero goes full-bleed on
+mobile exactly as it does on desktop — same structure, no band, no crop hack.
+The difference is only in what has to change: the subject now fills the whole
+frame width, so there's no empty margin to set text into. Copy anchors to the
+bottom instead of the centre, over a scrim heavy enough to hold type against a
+subject immediately behind it. Below 680px tall the type tightens further so an
+SE-class phone still shows the name, the lead line and both CTAs without
+clipping. Below 520px tall in landscape the scenes unpin entirely and the film
+becomes an ordinary, complete, scrollable page — the poster there also swaps to
+`aspect-ratio: 9/16` below 760px width, so the fallback still reads as the
+portrait crop it actually is rather than a landscape box force-cropping it.
 
 **Reduced motion.** `prefers-reduced-motion: reduce` is a real branch, not a
 disabled animation: the engine never starts, the film is never downloaded,
 pinned scenes collapse to normal flow, the horizontal rail becomes a vertical
 list, stacked beats become legible sequences, and the homepage shortens from
-~26,000px to ~14,000px with every piece of content visible.
+~26,000px to ~16,000px with every piece of content visible.
 
 ---
 
@@ -207,5 +230,8 @@ tap targets at 44px on touch pointers / 24px on fine pointers (WCAG 2.2 SC
 
 Plus interaction tests for the menu focus trap and Escape, contact validation →
 mailto → reset, skip link and focus rings, reduced motion, and the hero film:
-size tier, format fallback, decode, monotonic scrub across the full 10 seconds,
-and zero bytes spent under Save-Data.
+portrait/landscape crop selection by viewport, size tier, format fallback,
+decode, correct poster (and background) on both crops and on rotate, monotonic
+scrub across the full 5 seconds on every tier, the true first frame painting
+correctly at rest (not the poster) on load, and zero bytes spent under
+Save-Data or a viewport too short to scrub.
