@@ -162,14 +162,14 @@ window.FJ.journal = [
       'People ask which one I am. The assumption behind the question is that creativity and entrepreneurship are separate territories, and that spending time in one costs you credibility in the other.',
       'I have never found that to be true in practice. The separation is a habit we inherited, not something the work supports.',
       'Both disciplines start from the same place: something does not exist, and you think it should. Both require you to hold a clear picture of a thing nobody else can see yet, and to keep that picture intact while reality argues with it.',
-      'Both are mostly editing. A first draft and a first version of a product have the same problem — too much of everything, no point of view. The skill is knowing what to remove.',
+      'Both are mostly editing. A first draft and a first version of a product have the same problem: too much of everything, no point of view. The skill is knowing what to remove.',
       'Both are judged by whether they land. A record that nobody plays and a product that nobody uses have failed in exactly the same way, and for exactly the same reason.',
-      'The differences are real but smaller than people think. Business has more constraints you cannot negotiate with — capital, timing, regulation, other people\'s incentives. Art has fewer external constraints and therefore demands more internal ones. That is a difference of terrain, not of thinking.',
+      'The differences are real but smaller than people think. Business has more constraints you cannot negotiate with: capital, timing, regulation, other people\'s incentives. Art has fewer external constraints and therefore demands more internal ones. That is a difference of terrain, not of thinking.',
       'What actually transfers is taste. Taste is the ability to tell the difference between something that is finished and something that has merely stopped. It is the most underrated business skill I know, and it is trained almost exclusively by creative work.',
       'The second thing that transfers is tolerance for the middle. Every creative project has a long stretch where the idea is no longer exciting and not yet good. Most people quit there. Building a company is that stretch, extended over years, with payroll.',
       'So I stopped choosing. Entrepren-Artist is not a clever way of saying I do two jobs. It is a description of one method applied to different material.',
       'The method is simple to state and hard to hold. Start from what should exist. Build it with taste. Judge it by whether it reaches anyone.',
-      'Everything I work on — companies, technology, music — runs on that. The output changes. The question does not.'
+      'Everything I work on (companies, technology, music) runs on that. The output changes. The question does not.'
     ]
   },
   {
@@ -224,7 +224,7 @@ window.FJ.music = {
     'Fudge & The Frequency started as music and became the way everything else is understood.',
     'The idea was never that a song is a product. It is a transfer. Something written alone reaches someone alone, and in that moment it stops belonging to the person who wrote it.',
     'That transfer is what the name refers to. The Frequency is not a sound. It is the thing that happens between people when something resonates.',
-    'Everything built since — companies, technology, ideas — is an attempt to reproduce that effect with different equipment.'
+    'Everything built since (companies, technology, ideas) is an attempt to reproduce that effect with different equipment.'
   ],
   releases: [],
   live: []
@@ -252,14 +252,14 @@ window.FJ.about = {
       id: 'journey', label: 'The Journey', title: 'From a project to an ecosystem.',
       body: [
         'The Frequency moved from a music project to a philosophy, and from a philosophy to an enterprise.',
-        'Frequency Digital Group is the structure that makes the philosophy operational — a global parent entity for companies, ventures, technology and creative projects that share one intent.'
+        'Frequency Digital Group is the structure that makes the philosophy operational: a global parent entity for companies, ventures, technology and creative projects that share one intent.'
       ]
     },
     {
       id: 'entrepreneur', label: 'Entrepreneur', title: 'Building things that should exist.',
       body: [
         'The entrepreneurial work is company building: creating, developing and growing ideas that resonate with people.',
-        'Review Revolution is the first venture operating publicly under the group — an AI-powered Reputation Growth Platform for businesses that want to build reputation deliberately rather than hope for it.'
+        'Review Revolution is the first venture operating publicly under the group: an AI-powered Reputation Growth Platform for businesses that want to build reputation deliberately rather than hope for it.'
       ]
     },
     {
