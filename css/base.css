@@ -604,6 +604,13 @@ button { cursor: pointer; }
 }
 .pagehead__bg { position: absolute; inset: -9% 0; height: 118%; z-index: 0; }
 .pagehead__bg > * { width: 100%; height: 100%; object-fit: cover; }
+/* A 16:9 plate in a portrait viewport crops to a narrow vertical
+   slice, so a subject sitting off-centre drops out of frame
+   entirely. Each pagehead names its own focal point in --focal-m
+   to keep that subject visible once the crop gets narrow. */
+@media (max-width: 760px) {
+  .pagehead__bg > * { object-position: var(--focal-m, 50% 50%); }
+}
 .pagehead__bg::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(to top, var(--ink) 2%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.55));
